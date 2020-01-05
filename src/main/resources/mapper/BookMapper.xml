@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.wmkfe.bookmanage.dao.BookMapper" >
+
+    <insert id="add" parameterType="cn.wmkfe.bookmanage.model.Book">
+        insert into t_book  (book_name, author, t_book.type, price, press, t_book.number, isbn, cover, t_book.describe)
+        values (#{bookName}, #{author}, #{type}, #{price}, #{press}, #{number}, #{isbn}, #{cover},#{describe})
+    </insert>
+    <delete id="delete" >
+        delete from t_book
+        where book_id in
+        <foreach collection="array" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
+    </delete>
+
+    <update id="update" parameterType="cn.wmkfe.bookmanage.model.Book">
+        update t_book
+        <set>
+            <if test="bookName !=null and bookName!=''">
+                book_name=#{bookName},
+            </if>
+            <if test="author !=null and author!=''">
+                author=#{author},
+            </if>
+            <if test="price !=null">
+                price=#{price},
+            </if>
+            <if test="type !=null">
+                t_book.type=#{type},
+            </if>
+            <if test="press !=null and press!=''">
+                press=#{press},
+            </if>
+            <if test="number !=null">
+                t_book.number=#{number},
+            </if>
+            <if test="isbn !=null and isbn!=''">
+                isbn=#{isbn},
+            </if>
+            <if test="cover !=null and cover!=''">
+                cover=#{cover},
+            </if>
+            <if test="describe !=null and describe !=''">
+                t_book.describe=#{describe}
+            </if>
+        </set>
+        where book_id=#{bookId}
+    </update>
+
+    <select id="getByBookId"  resultType="cn.wmkfe.bookmanage.model.Book">
+        select book_id, book_name, author, b.type,type_name, price, press, number, isbn, cover, b.describe
+        from t_book as b
+        left join t_type as t
+        on b.`type`=t.`id`
+        where book_id=#{bookId}
+    </select>
+
+
+
+    <select id="getList"  resultMap="getListMap">
+        select book_id, book_name, author, b.type,type_name, price, press, number, isbn, cover, b.describe
+        from t_book as b
+        left join t_type as t
+        on b.`type`=t.`id`
+        <where>
+            <if test="keyword!=null and keyword!=''">
+                INSTR (book_name,#{keyword}) OR INSTR(author,#{keyword})
+            </if>
+        </where>
+        order by book_id ASC limit ${from},${pageSize}
+    </select>
+
+    <resultMap id="getListMap" type="cn.wmkfe.bookmanage.model.Book">
+        <id column="book_id" property="bookId"></id>
+        <result column="book_name" property="bookName"/>
+        <result column="author" property="author"/>
+        <result column="type" property="type"/>
+
+        <result column="price" property="price"/>
+        <result column="press" property="press"/>
+        <result column="number" property="number"/>
+        <result column="isbn" property="isbn"/>
+        <result column="cover" property="cover"/>
+        <result column="describe" property="describe"/>
+
+        <association property="typeModel" javaType="cn.wmkfe.bookmanage.model.Type">
+            <result column="type_name" property="typeName"/>
+        </association>
+
+    </resultMap>
+
+
+
+
+
+    <select id="getTotal" resultType="int">
+        select count(book_id)
+        from t_book as b
+        <where>
+            <if test="keyword!=null and keyword!=''">
+                INSTR (book_name,#{keyword}) OR INSTR(author,#{keyword})
+            </if>
+        </where>
+    </select>
+</mapper>

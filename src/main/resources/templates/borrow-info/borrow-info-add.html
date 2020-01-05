@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>添加图书</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{/css/public.css}" media="all">
+    <link rel="stylesheet" th:href="@{/css/book-add.css}" media="all">
+</head>
+<body class="childrenBody">
+<div class="content">
+    <form class="layui-form layui-row">
+
+        <input type="hidden" name="bookId" class="layui-input  bookId">
+
+        <div class="layui-col-md6 layui-col-xs12">
+            <div class="layui-col-space10">
+                <div class="layui-col-md9 layui-col-xs7">
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">书名</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="bookName" class="layui-input  bookName">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">作者</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="author" class="layui-input  author">
+                        </div>
+                    </div>
+
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">价格</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="price" lay-verify="price" class="layui-input price">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="layui-col-md3 layui-col-xs5">
+<!--                <div class="layui-upload-list thumbBox mag0 magt3">-->
+                    <div class="thumbBox mag0 magt3">
+                        <img class="layui-upload-img  thumbImg  cover"
+                             src="http://book.img.ireader.com/idc_1/m_1,w_117,h_156,q_100/60cb640f/group6/M00/71/E5/CmQUNlbOsdGEHwzDAAAAAFGWDMQ316218681.jpg?v=iYALk3uN&t=CmQUNl1H0mQ."
+                             id="cover">
+                    </div>
+                    <input class="layui-upload-file" type="file" name="file">
+
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">分类</label>
+                <div class="layui-input-block">
+                    <select name="type" lay-filter="types">
+                        <option value="0" th:each="type : ${typeList}" th:value="${type.id}" th:text="${type.typeName}">
+                            写作
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">出版社</label>
+                <div class="layui-input-block">
+                    <input type="text" name="press" class="layui-input press">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">数量</label>
+                <div class="layui-input-block">
+                    <input type="text" name="number" lay-verify="number" class="layui-input number">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">标准书号</label>
+                <div class="layui-input-block">
+                    <input type="text" name="isbn" class="layui-input isbn" lay-verify="number">
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">描述</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入内容" name="describe" class="layui-textarea describe"></textarea>
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="changeBook">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/book/book-add.js}"></script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.wmkfe.bookmanage.dao.BorrowInfoMapper">
+    <insert id="add" parameterType="cn.wmkfe.bookmanage.model.BorrowInfo">
+        insert into t_borrow_info
+                (borrow_id, lend_time, give_back_time,
+                 reader_id, book_id, be_overdue,
+                 fine, be_overdue_day)
+        values (#{borrowId},#{lendTime},#{giveBackTime},
+                #{readerId},#{beOverdue},#{bookId}
+                #{fine},#{beOverdueDay});
+    </insert>
+
+    <delete id="delete">
+        delete from t_borrow_info
+        where book_id in
+        <foreach collection="array" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
+    </delete>
+
+    <update id="update" parameterType="cn.wmkfe.bookmanage.model.BorrowInfo">
+        update t_borrow_info
+        <set>
+            <if test="borrowId !=null and borrowId!=''">
+                borrow_id=#{borrowId},
+            </if>
+            <if test="lendTime !=null">
+                lend_time=#{lendTime},
+            </if>
+            <if test="giveBackTime !=null">
+                give_back_time=#{giveBackTime},
+            </if>
+            <if test="readerId !=null and readerId!=''">
+                reader_id=#{readerId},
+            </if>
+            <if test="beOverdue !=null">
+                be_overdue=#{beOverdue},
+            </if>
+            <if test="bookId !=null and bookId!=''">
+                book_id=#{bookId},
+            </if>
+
+            <if test="fine !=null">
+                fine=#{fine},
+            </if>
+            <if test="beOverdueDay !=null and beOverdueDay!=''">
+                be_overdue_day=#{beOverdueDay}
+            </if>
+
+        </set>
+        where borrow_id=#{borrowId}
+    </update>
+
+    <select id="getByBorrowInfoId" resultMap="borrowInfoMap">
+        SELECT
+        borrow_id,
+        lend_time,
+        give_back_time,
+        b_i.reader_id,
+        b_i.book_id,
+        be_overdue,
+        fine,
+        be_overdue_day,
+        b.`book_name`,
+        r.`name`
+        FROM
+        t_borrow_info AS b_i
+        LEFT JOIN t_book AS b
+        ON b_i.`book_id`=b.`book_id`
+        LEFT JOIN t_reader AS r
+        ON b_i.`reader_id`=r.`reader_id`
+        <!--        <where>-->
+        <!--            <if test="keyword!=null and keyword!=''">-->
+        <!--                INSTR (book_name,#{keyword}) OR INSTR(author,#{keyword})-->
+        <!--            </if>-->
+        <!--        </where>-->
+        where borrow_id=#{borrowId}
+    </select>
+
+
+    <select id="getList" resultMap="borrowInfoMap" >
+        SELECT
+        borrow_id,
+        lend_time,
+        give_back_time,
+        b_i.reader_id,
+        b_i.book_id,
+        be_overdue,
+        fine,
+        be_overdue_day,
+        b.`book_name`,
+        r.`name`
+        FROM
+        t_borrow_info AS b_i
+        LEFT JOIN t_book AS b
+        ON b_i.`book_id`=b.`book_id`
+        LEFT JOIN t_reader AS r
+        ON b_i.`reader_id`=r.`reader_id`
+        <!--        <where>-->
+        <!--            <if test="keyword!=null and keyword!=''">-->
+        <!--                INSTR (book_name,#{keyword}) OR INSTR(author,#{keyword})-->
+        <!--            </if>-->
+        <!--        </where>-->
+        order by book_id ASC limit ${from},${pageSize}
+    </select>
+
+    <resultMap id="borrowInfoMap" type="cn.wmkfe.bookmanage.model.BorrowInfo">
+        <id column="borrow_id" property="borrowId"></id>
+        <result column="lend_time" property="lendTime"></result>
+        <result column="give_back_time" property="giveBackTime"></result>
+        <result column="reader_id" property="readerId"></result>
+
+        <result column="book_id" property="bookId"></result>
+        <result column="be_overdue" property="beOverdue"></result>
+        <result column="fine" property="fine"></result>
+        <result column="be_overdue_day" property="beOverdueDay"></result>
+
+        <association property="book" javaType="cn.wmkfe.bookmanage.model.Book">
+            <result column="book_name" property="bookName"></result>
+        </association>
+
+        <association property="reader" javaType="cn.wmkfe.bookmanage.model.Reader">
+            <result column="name" property="name"></result>
+        </association>
+    </resultMap>
+
+
+
+    <select id="getTotal" resultType="int">
+        select count(borrow_id)
+        from t_borrow_info as b
+        <!--        <where>-->
+        <!--            <if test="keyword!=null and keyword!=''">-->
+        <!--                INSTR (book_name,#{keyword}) OR INSTR(author,#{keyword})-->
+        <!--            </if>-->
+        <!--        </where>-->
+    </select>
+
+</mapper>
