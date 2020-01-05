@@ -20,19 +20,20 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element'], function () {
             // ,{field: 'username', title: '用户名', width:120,templet:function(d){
             //         return '<div><a href="#" target="_blank"><img height="150" src="http://book.img.ireader.com/idc_1/m_1,w_117,h_156,q_100/1ed97056/group61/M00/61/1C/CmQUOV3qCCCED8ffAAAAADyo0VE790657608.jpg?v=Ud3g9MGg&t=CmQUOV37QKg."  /></a></div>';}}
             , {field: 'bookId', title: 'ID', width: 60,hide:true}
-            , {field: 'bookName', title: '书名', width: 100}
-            , {field: 'author', title: '作者', width: 100}
+            , {field: 'bookName', title: '书名', align: 'center',width: 100}
+            , {field: 'author', title: '作者', align: 'center',width: 100}
             , {field: 'type', title: '分类Id', width: 120,hide:true}
-            , {field: 'typeName', title: '分类', width: 120,templet:function(d){
+            , {field: 'typeName', title: '分类',align: 'center', width: 120,templet:function(d){
                 return d.typeModel.typeName;
             }}
-            , {field: 'price', title: '价格', width: 80}
-            , {field: 'press', title: '出版社', width: 130}
-            , {field: 'number', title: '数量', width: 80}
-            , {field: 'isbn', title: '标准书号', width: 120}
-            , {field: 'cover', title: '封面', width: 100}
+            , {field: 'price', title: '价格',align: 'center', width: 80}
+            , {field: 'press', title: '出版社', align: 'center',width: 130}
+            , {field: 'number', title: '数量',align: 'center', width: 80}
+            , {field: 'isbn', title: '标准书号',align: 'center', width: 120}
+            , {field: 'lendNumber', title: '借出数量',align: 'center', width: 100}
+            , {field: 'cover', title: '封面', width: 100,hide:true}
             , {field: 'describe', title: '描述', width: 260}
-            , {fixed: 'right', width: 165, align: 'center', toolbar: '#book-list-bar'}  //每行的操作按钮
+            , {fixed: 'right',title:'操作', width: 165, align: 'center', toolbar: '#book-list-bar'}  //每行的操作按钮
         ]]
     });
 

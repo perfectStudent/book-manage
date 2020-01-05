@@ -3,8 +3,8 @@
 <mapper namespace="cn.wmkfe.bookmanage.dao.BookMapper" >
 
     <insert id="add" parameterType="cn.wmkfe.bookmanage.model.Book">
-        insert into t_book  (book_name, author, t_book.type, price, press, t_book.number, isbn, cover, t_book.describe)
-        values (#{bookName}, #{author}, #{type}, #{price}, #{press}, #{number}, #{isbn}, #{cover},#{describe})
+        insert into t_book  (book_name, author, t_book.type, price, press, t_book.number, isbn, cover, t_book.describe,lend_number)
+        values (#{bookName}, #{author}, #{type}, #{price}, #{press}, #{number}, #{isbn}, #{cover},#{describe},#{lendNumber})
     </insert>
     <delete id="delete" >
         delete from t_book
@@ -44,12 +44,15 @@
             <if test="describe !=null and describe !=''">
                 t_book.describe=#{describe}
             </if>
+            <if test="lendNumber !=null">
+                t_book.lend_number=#{lendNumber}
+            </if>
         </set>
         where book_id=#{bookId}
     </update>
 
     <select id="getByBookId"  resultType="cn.wmkfe.bookmanage.model.Book">
-        select book_id, book_name, author, b.type,type_name, price, press, number, isbn, cover, b.describe
+        select book_id, book_name, author, b.type,type_name, price, press, number, isbn, cover, b.describe,lend_number
         from t_book as b
         left join t_type as t
         on b.`type`=t.`id`
@@ -59,7 +62,7 @@
 
 
     <select id="getList"  resultMap="getListMap">
-        select book_id, book_name, author, b.type,type_name, price, press, number, isbn, cover, b.describe
+        select book_id, book_name, author, b.type,type_name, price, press, number, isbn, cover, b.describe,lend_number
         from t_book as b
         left join t_type as t
         on b.`type`=t.`id`
@@ -83,15 +86,11 @@
         <result column="isbn" property="isbn"/>
         <result column="cover" property="cover"/>
         <result column="describe" property="describe"/>
-
+        <result column="lend_number" property="lendNumber"/>
         <association property="typeModel" javaType="cn.wmkfe.bookmanage.model.Type">
             <result column="type_name" property="typeName"/>
         </association>
-
     </resultMap>
-
-
-
 
 
     <select id="getTotal" resultType="int">

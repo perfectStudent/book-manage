@@ -1,4 +1,4 @@
-layui.use(['jquery', 'laypage', 'layer', 'table', 'element','util'], function () {
+layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'util'], function () {
     var laypage = layui.laypage //分页
         , layer = layui.layer //弹层
         , table = layui.table //表格
@@ -18,20 +18,29 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element','util'], function ()
         // ,toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
         , cols: [[ //表头
             {type: 'checkbox', fixed: 'left'}
-            , {field: 'borrowId', title: 'ID', width: 60,hide:true}
-            , {field: 'lendTime', title: '借书时间', width: 100,templet:function(d){
-                return util.toDateString(d.lendTime, 'yyyy-MM-dd HH:mm:ss')
+            , {field: 'readerId', title: '读者ID',align: 'center', width: 150}
+            , {field: 'typeName', title: '读者姓名', align: 'center', width: 120, templet: function (d) {
+                    return d.reader.name;
                 }}
-            , {field: 'giveBackTime', title: '到期时间', width: 100}
-            , {field: 'readerId', title: '读者ID', width: 120,hide:true}
-            // , {field: 'typeName', title: '分类', width: 120,templet:function(d){
-            //         return d.typeModel.typeName;
-            //     }}
-            , {field: 'bookId', title: '书本ID', width: 80}
-            , {field: 'beOverdue', title: '是否逾期', width: 130}
-            , {field: 'fine', title: '罚款', width: 80}
-            , {field: 'beOverdueDay', title: '逾期天数', width: 120}
-            , {fixed: 'right', width: 165, align: 'center', toolbar: '#borrow-info-list-bar'}  //每行的操作按钮
+            , {field: 'bookId', title: '书本ID', width: 80, hide: true}
+            , {field: 'typeName', title: '书名', align: 'center', width: 120, templet: function (d) {
+                    return d.book.bookName;
+                }}
+            , {field: 'beOverdue', title: '是否逾期', align: 'center', width: 120, templet: function (d) {
+                    return d.beOverdue ? '<span class=\"layui-red\">是</span>' : '否';
+                }}
+            , {field: 'borrowId', title: 'ID', width: 60, hide: true}
+            , {field: 'lendTime', title: '借书时间', align: 'center', width: 180, templet: function (d) {
+                    return util.toDateString(d.lendTime, 'yyyy-MM-dd HH:mm:ss')
+                }}
+            , {field: 'giveBackTime', align: 'center', title: '到期时间', width: 180, templet: function (d) {
+                    return util.toDateString(d.giveBackTime, 'yyyy-MM-dd HH:mm:ss')
+                }}
+            , {field: 'fine', title: '罚款', align: 'center', width: 100,templet: function (d) {
+                        return d.fine+'元';
+                }}
+            , {field: 'beOverdueDay', title: '逾期天数', align: 'center', width: 120}
+            , {fixed: 'right', title: '操作', width: 165, align: 'center', toolbar: '#borrow-info-list-bar'}  //每行的操作按钮
         ]]
     });
 
@@ -106,7 +115,7 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element','util'], function ()
     }
 
 
-    function detailBook(data){
+    function detailBook(data) {
         console.log(data)
         var index = layui.layer.open({
             title: "查看图书",
@@ -160,7 +169,8 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element','util'], function ()
             bookId = [];
         for (var i in data) {
             bookId.push(data[i].bookId);
-        };
+        }
+        ;
         $.ajax({
             type: "POST",
             url: "/books",

@@ -23,6 +23,16 @@ public class Book {
 
     private String describe;
 
+    private Integer lendNumber;
+
+    public Integer getLendNumber() {
+        return lendNumber;
+    }
+
+    public void setLendNumber(Integer lendNumber) {
+        this.lendNumber = lendNumber;
+    }
+
     private Type typeModel;
 
 
