@@ -9,6 +9,7 @@ public abstract class AbstractApiController {
         map.put("code",code);
         map.put("msg",errMsg);
         map.put("data",data);
+        map.put("data",data);
        return map;
     }
 
