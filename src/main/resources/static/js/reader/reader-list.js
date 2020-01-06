@@ -1,45 +1,44 @@
-layui.use(['jquery', 'laypage', 'layer', 'table', 'element'], function () {
+layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'util','form'], function () {
     var laypage = layui.laypage //分页
         , layer = layui.layer //弹层
         , table = layui.table //表格
         , $ = layui.jquery //jquery
         , element = layui.element //元素操作
+        , util = layui.util //工具
         , form = layui.form //表单
-
     //执行一个 table 实例
     var tableIndex = table.render({
-        id: 'bookListTable',
-        elem: '#book-list' //填写id
+        id: 'readerListTable',
+        elem: '#reader-list' //填写id
         , height: 'full-100'
-        , url: '/books' //数据接口
+        , url: '/readers' //数据接口
         , title: '用户表'
         , page: true //开启分页
-        // ,toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
         , cols: [[ //表头
             {type: 'checkbox', fixed: 'left'}
-            // ,{field: 'username', title: '用户名', width:120,templet:function(d){
-            //         return '<div><a href="#" target="_blank"><img height="150" src="http://book.img.ireader.com/idc_1/m_1,w_117,h_156,q_100/1ed97056/group61/M00/61/1C/CmQUOV3qCCCED8ffAAAAADyo0VE790657608.jpg?v=Ud3g9MGg&t=CmQUOV37QKg."  /></a></div>';}}
-            , {field: 'bookId', title: 'ID', width: 60,hide:true}
-            , {field: 'bookName', title: '书名', align: 'center',width: 100}
-            , {field: 'author', title: '作者', align: 'center',width: 100}
-            , {field: 'type', title: '分类Id', width: 120,hide:true}
-            , {field: 'typeName', title: '分类',align: 'center', width: 120,templet:function(d){
-                return d.typeModel.typeName;
-            }}
-            , {field: 'price', title: '价格',align: 'center', width: 80}
-            , {field: 'press', title: '出版社', align: 'center',width: 130}
-            , {field: 'number', title: '数量',align: 'center', width: 80}
-            , {field: 'isbn', title: '标准书号',align: 'center', width: 120}
-            , {field: 'lendNumber', title: '借出数量',align: 'center', width: 100}
-            , {field: 'cover', title: '封面', width: 100,hide:true}
-            , {field: 'describe', title: '描述', width: 260}
-            , {fixed: 'right',title:'操作', width: 165, align: 'center', toolbar: '#book-list-bar'}  //每行的操作按钮
+            , {field: 'readerId', title: '读者ID',align: 'center', width: 150}
+            , {field: 'password', title: '密码', align: 'center', width: 120,templet: function (d) {
+                    return '* * * * * *';
+                }}
+            , {field: 'name', title: '读者姓名', align: 'center',width: 180}
+            , {field: 'avatar', title: '书名', align: 'center', width: 120, hide: true}
+            , {field: 'phone', title: '号码', align: 'center', width: 180}
+            , {field: 'departmentName', title: '专业', align: 'center', width: 220, templet: function (d) {
+                    return d.departmentModel.departmentName;
+                }}
+            , {field: 'classTable', title: '班级', align: 'center', width: 120, templet: function (d) {
+                    return d.classTable.className;
+                }}
+            , {field: 'genderModel', title: '性别', align: 'center', width: 120, templet: function (d) {
+                    return d.genderModel.genderName;
+                }}
+            , {fixed: 'right', title: '操作', width: 165, align: 'center', toolbar: '#reader-list-bar'}  //每行的操作按钮
         ]]
     });
 
 
     //监听行工具事件
-    table.on('tool(book-list-filter)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+    table.on('tool(reader-list-filter)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
         var data = obj.data //获得当前行数据
             , layEvent = obj.event; //获得 lay-event 对应的值
         if (layEvent === 'detail') {
@@ -49,7 +48,6 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element'], function () {
             layer.confirm('真的删除行么', function (index) {
                 // obj.del(); //删除对应行（tr）的DOM结构
                 // layer.close(index);
-                //向服务端发送删除指令
                 deleteBooks(data, index);
             });
         } else if (layEvent === 'edit') {
@@ -61,7 +59,7 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element'], function () {
     //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
     $(".search_btn").on("click", function () {
         if ($(".searchVal").val() != '') {
-            table.reload("bookListTable", {
+            table.reload("readerListTable", {
                 page: {
                     curr: 1 //重新从第 1 页开始
                 },
@@ -76,7 +74,7 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element'], function () {
 
     //添加图书
     function addBook(edit) {
-        var index = layer.open({
+        var index = layui.layer.open({
             title: "添加图书",
             type: 2,
             content: ['/book-add.html', 'no'],
@@ -104,11 +102,9 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element'], function () {
                 }, 500)
             }
         })
-
     }
 
-        //查看图书
-    function detailBook(data){
+    function detailBook(data) {
         console.log(data)
         var index = layui.layer.open({
             title: "查看图书",
@@ -118,17 +114,17 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element'], function () {
             success: function (layero, index) {
                 form.render();
                 var body = layui.layer.getChildFrame('body', index);
-                    body.find(".bookId").val(data.bookId);
-                    body.find(".bookName").val(data.bookName);
-                    body.find(".author").val(data.author);
-                    body.find(".type").val(data.typeModel.typeName);
-                    body.find(".price").val(data.price);
-                    body.find(".press").val(data.press);
-                    body.find(".number").val(data.number);
-                    body.find(".isbn").val(data.isbn);
-                    body.find(".cover").attr("src", data.cover);
-                    body.find(".describe").val(data.describe);
-                    form.render();
+                body.find(".bookId").val(data.bookId);
+                body.find(".bookName").val(data.bookName);
+                body.find(".author").val(data.author);
+                body.find(".type").val(data.typeModel.typeName);
+                body.find(".price").val(data.price);
+                body.find(".press").val(data.press);
+                body.find(".number").val(data.number);
+                body.find(".isbn").val(data.isbn);
+                body.find(".cover").attr("src", data.cover);
+                body.find(".describe").val(data.describe);
+                form.render();
                 setTimeout(function () {
                     layui.layer.tips('点击此处返回图书列表', '.layui-layer-setwin .layui-layer-close', {
                         tips: 3
@@ -138,13 +134,14 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element'], function () {
         })
     }
 
+
     $(".addBook_btn").click(function () {
         addBook();
     })
 
     //批量删除
     $(".delAll_btn").click(function () {
-        var checkStatus = table.checkStatus('bookListTable'),
+        var checkStatus = table.checkStatus('readerListTable'),
             data = checkStatus.data;
         if (data.length > 0) {
             layer.confirm('确定删除选中的图书？', {icon: 3, title: '提示信息'}, function (index) {
@@ -156,12 +153,13 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element'], function () {
     })
 
     function deleteBooks(data, index) {
-        var checkStatus = table.checkStatus('bookListTable'),
+        var checkStatus = table.checkStatus('readerListTable'),
             data = checkStatus.data,
             bookId = [];
         for (var i in data) {
             bookId.push(data[i].bookId);
-        };
+        }
+        ;
         $.ajax({
             type: "POST",
             url: "/books",

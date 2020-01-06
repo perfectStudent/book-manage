@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.wmkfe.bookmanage.dao.ReaderMapper" >
+<mapper namespace="cn.wmkfe.bookmanage.dao.ReaderMapper">
     <insert id="add" parameterType="cn.wmkfe.bookmanage.model.Reader">
        insert into t_reader (reader_id, password, t_reader.name, gender, avatar, phone, department, class)
        values (#{readerId},#{password},#{name},#{gender},#{avatar},#{phone},#{department},#{class})
     </insert>
-    <delete id="delete" >
+    <delete id="delete">
         delete from t_reader
         where reader_id in
         <foreach collection="array" open="(" close=")" separator="," item="item">
@@ -44,57 +44,82 @@
         where reader_id=#{readerId}
     </update>
 
-    <select id="getByReaderId"  resultType="cn.wmkfe.bookmanage.model.Reader">
+    <select id="getByReaderId" resultMap="readerMap">
         select r.reader_id, r.password, r.name, r.gender, r.avatar, r.phone, r.department, r.class,
-                 g.gender_name, c_t.class_name
+                 g.gender_name, c_t.class_name,d.department_name
         from t_reader as r
         left join t_gender as g
         on r.gender=g.id
         left join t_class_table as c_t
         on r.class=c_t.id
+        LEFT JOIN t_department AS d
+        ON r.department = d.id
         where reader_id=#{readerId}
     </select>
 
 
+    <resultMap id="readerMap" type="cn.wmkfe.bookmanage.model.Reader">
+        <id column="reader_id" property="readerId"></id>
+        <result column="password" property="password"></result>
+        <result column="name" property="name"></result>
+        <result column="gender" property="gender"></result>
+        <result column="avatar" property="avatar"></result>
+        <result column="phone" property="phone"></result>
+        <result column="department" property="department"></result>
+        <result column="class" property="class"></result>
+        <association property="book" javaType="cn.wmkfe.bookmanage.model.Book">
+            <result column="gender_name" property="genderName"></result>
+        </association>
+        <association property="classTable" javaType="cn.wmkfe.bookmanage.model.ClassTable">
+            <result column="class_name" property="className"></result>
+        </association>
+    </resultMap>
 
-    <select id="getList"  resultMap="getListMap">
-        select Reader_id, Reader_name, author, b.type,type_name, price, press, number, isbn, cover, b.describe,lend_number
-        from t_Reader as b
-        left join t_type as t
-        on b.`type`=t.`id`
+    <select id="getList" resultMap="getListMap">
+        select r.reader_id, r.password, r.name, r.gender, r.avatar, r.phone, r.department, r.class,
+        g.gender_name, c_t.class_name,d.department_name
+        from t_reader as r
+        left join t_gender as g
+        on r.gender=g.id
+        left join t_class_table as c_t
+        on r.class=c_t.id
+        LEFT JOIN t_department AS d
+        ON r.department = d.id
         <where>
             <if test="keyword!=null and keyword!=''">
-                INSTR (Reader_name,#{keyword}) OR INSTR(author,#{keyword})
+                INSTR (r.name,#{keyword}) OR INSTR(c_t.class_name,#{keyword})
             </if>
         </where>
-        order by Reader_id ASC limit ${from},${pageSize}
+        order by r.reader_id ASC limit ${from},${pageSize}
     </select>
 
     <resultMap id="getListMap" type="cn.wmkfe.bookmanage.model.Reader">
-        <id column="Reader_id" property="ReaderId"></id>
-        <result column="Reader_name" property="ReaderName"/>
-        <result column="author" property="author"/>
-        <result column="type" property="type"/>
-
-        <result column="price" property="price"/>
-        <result column="press" property="press"/>
-        <result column="number" property="number"/>
-        <result column="isbn" property="isbn"/>
-        <result column="cover" property="cover"/>
-        <result column="describe" property="describe"/>
-        <result column="lend_number" property="lendNumber"/>
-        <association property="typeModel" javaType="cn.wmkfe.bookmanage.model.Type">
-            <result column="type_name" property="typeName"/>
+        <id column="reader_id" property="readerId"></id>
+        <result column="password" property="password"/>
+        <result column="name" property="name"/>
+        <result column="gender" property="gender"/>
+        <result column="avatar" property="avatar"/>
+        <result column="phone" property="phone"/>
+        <result column="department" property="department"/>
+        <result column="class" property="classId"/>
+        <association property="genderModel" javaType="cn.wmkfe.bookmanage.model.Gender">
+            <result column="gender_name" property="genderName"/>
+        </association>
+        <association property="classTable" javaType="cn.wmkfe.bookmanage.model.ClassTable">
+            <result column="class_name" property="className"/>
+        </association>
+        <association property="departmentModel" javaType="cn.wmkfe.bookmanage.model.Department">
+            <result column="department_name" property="departmentName"/>
         </association>
     </resultMap>
 
 
     <select id="getTotal" resultType="int">
-        select count(Reader_id)
-        from t_Reader as b
+        select count(reader_id)
+        from t_reader as r
         <where>
             <if test="keyword!=null and keyword!=''">
-                INSTR (Reader_name,#{keyword}) OR INSTR(author,#{keyword})
+                INSTR (r.name,#{keyword}) OR INSTR(c_t.class_name,#{keyword})
             </if>
         </where>
     </select>

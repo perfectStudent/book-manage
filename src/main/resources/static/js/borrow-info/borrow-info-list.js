@@ -1,4 +1,4 @@
-layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'util'], function () {
+layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'util','form'], function () {
     var laypage = layui.laypage //分页
         , layer = layui.layer //弹层
         , table = layui.table //表格
@@ -6,7 +6,6 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'util'], function (
         , element = layui.element //元素操作
         , util = layui.util //工具
         , form = layui.form //表单
-
     //执行一个 table 实例
     var tableIndex = table.render({
         id: 'borrowInfoListTable',
@@ -18,7 +17,7 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'util'], function (
         // ,toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
         , cols: [[ //表头
             {type: 'checkbox', fixed: 'left'}
-            , {field: 'readerId', title: '读者ID',align: 'center', width: 150}
+            , {field: 'readerId', title: '读者ID',align: 'center', width: 100}
             , {field: 'typeName', title: '读者姓名', align: 'center', width: 120, templet: function (d) {
                     return d.reader.name;
                 }}
@@ -29,6 +28,7 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'util'], function (
             , {field: 'beOverdue', title: '是否逾期', align: 'center', width: 120, templet: function (d) {
                     return d.beOverdue ? '<span class=\"layui-red\">是</span>' : '否';
                 }}
+
             , {field: 'borrowId', title: 'ID', width: 60, hide: true}
             , {field: 'lendTime', title: '借书时间', align: 'center', width: 180, templet: function (d) {
                     return util.toDateString(d.lendTime, 'yyyy-MM-dd HH:mm:ss')
@@ -40,7 +40,10 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'util'], function (
                         return d.fine+'元';
                 }}
             , {field: 'beOverdueDay', title: '逾期天数', align: 'center', width: 120}
-            , {fixed: 'right', title: '操作', width: 165, align: 'center', toolbar: '#borrow-info-list-bar'}  //每行的操作按钮
+            // , {fixed: 'right', title: '操作', width: 165, align: 'center', toolbar: '#borrow-info-list-bar'}  //每行的操作按钮
+            , {field: 'whetherLend', title: '是否归还', align: 'center', width: 120, templet: function (d) {
+                    return d.whetherLend ? '<input type=\"checkbox\" name=\"yyy\" lay-skin=\"switch\" lay-text=\"ON|OFF\" checked>' : '否';
+                }}
         ]]
     });
 
@@ -111,9 +114,7 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'util'], function (
                 }, 500)
             }
         })
-
     }
-
 
     function detailBook(data) {
         console.log(data)

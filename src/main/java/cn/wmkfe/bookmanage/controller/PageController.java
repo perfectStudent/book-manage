@@ -53,4 +53,10 @@ public class PageController {
         return "borrow-info/borrow-info-list";
     }
 
+    //阅读列表
+    @RequestMapping(value = "/reader-list.html")
+    public String readerListPage(){
+        return "reader/reader-list";
+    }
+
 }

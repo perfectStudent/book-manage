@@ -54,14 +54,15 @@
 
     <select id="getByBorrowInfoId" resultMap="borrowInfoMap">
         SELECT
-        borrow_id,
-        lend_time,
-        give_back_time,
+        b_i.borrow_id,
+        b_i.lend_time,
+        b_i.give_back_time,
         b_i.reader_id,
         b_i.book_id,
-        be_overdue,
-        fine,
-        be_overdue_day,
+        b_i.be_overdue,
+        b_i.fine,
+        b_i.be_overdue_day,
+        b_i.whether_lend,
         b.`book_name`,
         r.`name`
         FROM
@@ -81,14 +82,15 @@
 
     <select id="getList" resultMap="borrowInfoMap" >
         SELECT
-        borrow_id,
-        lend_time,
-        give_back_time,
+        b_i.borrow_id,
+        b_i.lend_time,
+        b_i.give_back_time,
         b_i.reader_id,
         b_i.book_id,
-        be_overdue,
-        fine,
-        be_overdue_day,
+        b_i.be_overdue,
+        b_i.fine,
+        b_i.be_overdue_day,
+        b_i.whether_lend,
         b.`book_name`,
         r.`name`
         FROM
@@ -115,6 +117,7 @@
         <result column="be_overdue" property="beOverdue"></result>
         <result column="fine" property="fine"></result>
         <result column="be_overdue_day" property="beOverdueDay"></result>
+        <result column="whether_lend" property="whetherLend"></result>
 
         <association property="book" javaType="cn.wmkfe.bookmanage.model.Book">
             <result column="book_name" property="bookName"></result>

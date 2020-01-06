@@ -20,6 +20,16 @@ public class BorrowInfo {
 
     private String beOverdueDay;
 
+    private Boolean whetherLend;
+
+    public Boolean getWhetherLend() {
+        return whetherLend;
+    }
+
+    public void setWhetherLend(Boolean whetherLend) {
+        this.whetherLend = whetherLend;
+    }
+
     private Book book;
 
     private Reader reader;

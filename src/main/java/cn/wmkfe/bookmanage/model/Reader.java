@@ -17,12 +17,28 @@ public class Reader {
 
     private Integer classId;
 
+    private Book book;
+
+    private ClassTable classTable;
+
+    private Gender genderModel;
+
+    private Department departmentModel;
+
+    public Department getDepartmentModel() {
+        return departmentModel;
+    }
+
+    public void setDepartmentModel(Department departmentModel) {
+        this.departmentModel = departmentModel;
+    }
+
     public String getReaderId() {
         return readerId;
     }
 
     public void setReaderId(String readerId) {
-        this.readerId = readerId == null ? null : readerId.trim();
+        this.readerId = readerId;
     }
 
     public String getPassword() {
@@ -30,7 +46,7 @@ public class Reader {
     }
 
     public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
+        this.password = password;
     }
 
     public String getName() {
@@ -38,7 +54,7 @@ public class Reader {
     }
 
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name;
     }
 
     public Integer getGender() {
@@ -54,7 +70,7 @@ public class Reader {
     }
 
     public void setAvatar(String avatar) {
-        this.avatar = avatar == null ? null : avatar.trim();
+        this.avatar = avatar;
     }
 
     public String getPhone() {
@@ -62,7 +78,7 @@ public class Reader {
     }
 
     public void setPhone(String phone) {
-        this.phone = phone == null ? null : phone.trim();
+        this.phone = phone;
     }
 
     public Integer getDepartment() {
@@ -79,5 +95,29 @@ public class Reader {
 
     public void setClassId(Integer classId) {
         this.classId = classId;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public ClassTable getClassTable() {
+        return classTable;
+    }
+
+    public void setClassTable(ClassTable classTable) {
+        this.classTable = classTable;
+    }
+
+    public Gender getGenderModel() {
+        return genderModel;
+    }
+
+    public void setGenderModel(Gender genderModel) {
+        this.genderModel = genderModel;
     }
 }
