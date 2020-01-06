@@ -10,9 +10,10 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'upload', 'form','element'], f
     //上传缩略图
     upload.render({
         elem: '.thumbBox',
-        url: '../../json/userface.json',
-        method : "get",  //此处是为了演示之用，实际使用中请将此删除，默认用post方式提交
+        url: '/upload',
+        method : "post",  //此处是为了演示之用，实际使用中请将此删除，默认用post方式提交
         done: function(res, index, upload){
+            console.log(res);
             $('.thumbImg').attr('src',"http://book.img.ireader.com/idc_1/m_1,w_117,h_156,q_100/1ed97056/group61/M00/61/1C/CmQUOV3qCCCED8ffAAAAADyo0VE790657608.jpg?v=Ud3g9MGg&t=CmQUOV37QKg.");
             $('.thumbBox').css("background","#fff");
         }
