@@ -1,6 +1,7 @@
 package cn.wmkfe.bookmanage.service;
 
 import cn.wmkfe.bookmanage.model.BorrowInfo;
+import cn.wmkfe.bookmanage.vo.UpdateLendVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
@@ -27,4 +28,7 @@ public interface BorrowInfoService {
 
     //计算逾期和罚金
     void countBeOverdueAndFine();
+
+    //图书归还
+    int giveBackBook(UpdateLendVo updateLendVo);
 }

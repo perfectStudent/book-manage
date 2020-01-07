@@ -1,9 +1,12 @@
 package cn.wmkfe.bookmanage.service.serviceimpl;
 
+import cn.wmkfe.bookmanage.dao.BookMapper;
 import cn.wmkfe.bookmanage.dao.BorrowInfoMapper;
+import cn.wmkfe.bookmanage.model.Book;
 import cn.wmkfe.bookmanage.model.BorrowInfo;
 import cn.wmkfe.bookmanage.service.BorrowInfoService;
 import cn.wmkfe.bookmanage.util.PageSupport;
+import cn.wmkfe.bookmanage.vo.UpdateLendVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -22,7 +25,8 @@ import java.util.List;
 public class BorrowInfoServiceImpl implements BorrowInfoService {
     @Autowired
     private BorrowInfoMapper borrowInfoMapper;
-
+    @Autowired
+    private BookMapper bookMapper;
     @Transactional
     @Override
     public int addBorrowInfo(BorrowInfo borrowInfo) {
@@ -86,6 +90,19 @@ public class BorrowInfoServiceImpl implements BorrowInfoService {
         }
     }
 
+    @Transactional
+    @Override
+    public int giveBackBook(UpdateLendVo updateLendVo) {
+        //更新是否归还图书字段
+        borrowInfoMapper.updateWhetherLend(updateLendVo);
+        //查询图书借出数量
+        Book byBookId = bookMapper.getByBookId(updateLendVo.getBookId());
+        //设置借出图书数量
+        updateLendVo.setLendNumber(byBookId.getLendNumber()-1);
+        //更新图书借出数量
+        bookMapper.updateLendNumber(updateLendVo);
+        return 0;
+    }
 
     private long calculateDays(BorrowInfo bo){
         LocalDate now=LocalDate.now();//获取当前时间 格式 yyyy-mm-dd

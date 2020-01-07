@@ -47,6 +47,9 @@
             <if test="beOverdueDay !=null and beOverdueDay!=''">
                 be_overdue_day=#{beOverdueDay}
             </if>
+            <if test="whetherLend !=null">
+                whether_lend=#{whetherLend}
+            </if>
 
         </set>
         where borrow_id=#{borrowId}
@@ -139,5 +142,11 @@
         <!--            </if>-->
         <!--        </where>-->
     </select>
+
+    <update id="updateWhetherLend" parameterType="cn.wmkfe.bookmanage.vo.UpdateLendVo">
+        update t_borrow_info
+        set #{whether_lend}=whetherLend
+        where reader_id=#{readerId}
+    </update>
 
 </mapper>

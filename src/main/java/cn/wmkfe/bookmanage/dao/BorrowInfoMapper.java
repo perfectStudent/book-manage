@@ -2,6 +2,7 @@ package cn.wmkfe.bookmanage.dao;
 
 
 import cn.wmkfe.bookmanage.model.BorrowInfo;
+import cn.wmkfe.bookmanage.vo.UpdateLendVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -23,5 +24,6 @@ public interface BorrowInfoMapper {
 
     //获取借阅订单条数
     int getTotal(@Param("keyword") String keyword);
-
+    //更新归还字段
+    int updateWhetherLend(UpdateLendVo updateLendVo);
 }

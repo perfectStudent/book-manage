@@ -1,10 +1,10 @@
-layui.use(['jquery', 'laypage', 'layer', 'table', 'element'], function () {
+layui.use(['jquery', 'laypage', 'layer', 'table', 'element','form'], function () {
     var laypage = layui.laypage //分页
         , layer = layui.layer //弹层
         , table = layui.table //表格
         , $ = layui.jquery //jquery
         , element = layui.element //元素操作
-        , form = layui.form //表单
+        , form = layui.form ;//表单
 
     //执行一个 table 实例
     var tableIndex = table.render({
@@ -14,11 +14,8 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element'], function () {
         , url: '/books' //数据接口
         , title: '用户表'
         , page: true //开启分页
-        // ,toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
         , cols: [[ //表头
             {type: 'checkbox', fixed: 'left'}
-            // ,{field: 'username', title: '用户名', width:120,templet:function(d){
-            //         return '<div><a href="#" target="_blank"><img height="150" src="http://book.img.ireader.com/idc_1/m_1,w_117,h_156,q_100/1ed97056/group61/M00/61/1C/CmQUOV3qCCCED8ffAAAAADyo0VE790657608.jpg?v=Ud3g9MGg&t=CmQUOV37QKg."  /></a></div>';}}
             , {field: 'bookId', title: 'ID', width: 60,hide:true}
             , {field: 'bookName', title: '书名', align: 'center',width: 100}
             , {field: 'author', title: '作者', align: 'center',width: 100}
@@ -82,20 +79,22 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element'], function () {
             content: ['/book-add.html', 'no'],
             area: ['700px', '600px'],
             success: function (layero, index) {
-                form.render();
                 var body = layui.layer.getChildFrame('body', index);
+                var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：
+
                 if (edit) {
                     body.find(".bookId").val(edit.bookId);
                     body.find(".bookName").val(edit.bookName);
                     body.find(".author").val(edit.author);
-                    body.find(".type select").val(edit.type);
+                    // body.find("#type").val(edit.type);
+                    body.find("#type").val("3");
                     body.find(".price").val(edit.price);
                     body.find(".press").val(edit.press);
                     body.find(".number").val(edit.number);
                     body.find(".isbn").val(edit.isbn);
                     body.find(".cover").attr("src", edit.cover);
                     body.find(".describe").val(edit.describe);
-                    form.render();
+                    iframeWin.layui.form.render();
                 }
                 setTimeout(function () {
                     layui.layer.tips('点击此处返回图书列表', '.layui-layer-setwin .layui-layer-close', {
@@ -116,8 +115,8 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element'], function () {
             content: ['/book-detail.html', 'no'],
             area: ['700px', '600px'],
             success: function (layero, index) {
-                form.render();
                 var body = layui.layer.getChildFrame('body', index);
+
                     body.find(".bookId").val(data.bookId);
                     body.find(".bookName").val(data.bookName);
                     body.find(".author").val(data.author);
@@ -128,7 +127,7 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element'], function () {
                     body.find(".isbn").val(data.isbn);
                     body.find(".cover").attr("src", data.cover);
                     body.find(".describe").val(data.describe);
-                    form.render();
+
                 setTimeout(function () {
                     layui.layer.tips('点击此处返回图书列表', '.layui-layer-setwin .layui-layer-close', {
                         tips: 3

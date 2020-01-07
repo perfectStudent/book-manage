@@ -102,4 +102,10 @@
             </if>
         </where>
     </select>
+
+    <update id="updateLendNumber">
+        update t_book
+        set lend_number=#{lendNumber}
+        where book_id=#{bookId}
+    </update>
 </mapper>

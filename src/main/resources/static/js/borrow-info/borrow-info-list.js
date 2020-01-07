@@ -17,6 +17,7 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'util','form'], fun
         // ,toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
         , cols: [[ //表头
             {type: 'checkbox', fixed: 'left'}
+            , {field: 'borrowId', title: '借阅订单号',align: 'center', width: 100,hide: true}
             , {field: 'readerId', title: '读者ID',align: 'center', width: 100}
             , {field: 'typeName', title: '读者姓名', align: 'center', width: 120, templet: function (d) {
                     return d.reader.name;
@@ -42,7 +43,8 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'util','form'], fun
             , {field: 'beOverdueDay', title: '逾期天数', align: 'center', width: 120}
             // , {fixed: 'right', title: '操作', width: 165, align: 'center', toolbar: '#borrow-info-list-bar'}  //每行的操作按钮
             , {field: 'whetherLend', title: '是否归还', align: 'center', width: 120, templet: function (d) {
-                    return d.whetherLend ? '<input type=\"checkbox\" name=\"yyy\" lay-skin=\"switch\" lay-text=\"ON|OFF\" checked>' : '否';
+                    return d.whetherLend ? '<input type=\"checkbox\" name=\"whetherLend\" lay-filter=\"whetherLend\" lay-skin=\"switch\" lay-text=\"未归还|已归还\" checked>'
+                                            : '<input type=\"checkbox\" name=\"whetherLend\" lay-filter=\"whetherLend\" lay-skin=\"switch\" lay-text=\"未归还|已归还\" disabled>';
                 }}
         ]]
     });
@@ -83,68 +85,6 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'util','form'], fun
             layer.msg("请输入搜索的内容");
         }
     });
-
-    //添加图书
-    function addBook(edit) {
-        var index = layui.layer.open({
-            title: "添加图书",
-            type: 2,
-            content: ['/book-add.html', 'no'],
-            area: ['700px', '600px'],
-            success: function (layero, index) {
-                form.render();
-                var body = layui.layer.getChildFrame('body', index);
-                if (edit) {
-                    body.find(".bookId").val(edit.bookId);
-                    body.find(".bookName").val(edit.bookName);
-                    body.find(".author").val(edit.author);
-                    body.find(".type select").val(edit.type);
-                    body.find(".price").val(edit.price);
-                    body.find(".press").val(edit.press);
-                    body.find(".number").val(edit.number);
-                    body.find(".isbn").val(edit.isbn);
-                    body.find(".cover").attr("src", edit.cover);
-                    body.find(".describe").val(edit.describe);
-                    form.render();
-                }
-                setTimeout(function () {
-                    layui.layer.tips('点击此处返回图书列表', '.layui-layer-setwin .layui-layer-close', {
-                        tips: 3
-                    });
-                }, 500)
-            }
-        })
-    }
-
-    function detailBook(data) {
-        console.log(data)
-        var index = layui.layer.open({
-            title: "查看图书",
-            type: 2,
-            content: ['/book-detail.html', 'no'],
-            area: ['700px', '600px'],
-            success: function (layero, index) {
-                form.render();
-                var body = layui.layer.getChildFrame('body', index);
-                body.find(".bookId").val(data.bookId);
-                body.find(".bookName").val(data.bookName);
-                body.find(".author").val(data.author);
-                body.find(".type").val(data.typeModel.typeName);
-                body.find(".price").val(data.price);
-                body.find(".press").val(data.press);
-                body.find(".number").val(data.number);
-                body.find(".isbn").val(data.isbn);
-                body.find(".cover").attr("src", data.cover);
-                body.find(".describe").val(data.describe);
-                form.render();
-                setTimeout(function () {
-                    layui.layer.tips('点击此处返回图书列表', '.layui-layer-setwin .layui-layer-close', {
-                        tips: 3
-                    });
-                }, 500)
-            }
-        })
-    }
 
 
     $(".addBook_btn").click(function () {
@@ -187,4 +127,36 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'util','form'], fun
         })
     }
 
+
+    //归还图书
+    form.on('switch(whetherLend)', function(data){
+        // 获取当前所在行
+        var parentTr = data.othis.parents("tr");
+        // console.log(parentTr);
+        //eq(2): 代表的是表头字段位置    .layui-table-cell: 这个元素是我找表格div找出来的
+        var borrowId = $(parentTr).find("td:eq(1)").find(".layui-table-cell").text();
+        var bookId = $(parentTr).find("td:eq(3)").find(".layui-table-cell").text();
+        var whetherLend=data.elem.checked;//开关是否开启，true或者false
+        $(data.elem).attr("disabled","true");
+        $(data.othis).addClass("layui-checkbox-disbaled layui-disabled");
+        updateLend(bookId,borrowId,whetherLend);
+    });
+
+    function updateLend(bookId,borrowId,whetherLend){
+        $.ajax({
+            type: "POST",
+            url: "/giveBackBooks",
+            data: {
+                _method: "PUT",
+                borrowId:borrowId,
+                bookId: bookId,
+                whetherLend:whetherLend
+            },
+            dataType: "json",
+            success: function (res) {
+                // tableIndex.reload();
+                layer.close(index);
+            }
+        })
+    }
 });

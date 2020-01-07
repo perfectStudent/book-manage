@@ -44,7 +44,7 @@ public class UploadAPIController extends AbstractApiController {
                 }
                 uploadFile.transferTo(new File(filePath + newFileName));
 
-                map2.put("src","/images/newFileName");
+                map2.put("src","/images/"+newFileName);
 
                 return this.resultJson(ApiResponseEnum.SUCCESS.getCode(), ApiResponseEnum.SUCCESS.getName(), map2);
             }

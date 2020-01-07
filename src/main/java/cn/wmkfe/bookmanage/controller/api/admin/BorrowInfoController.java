@@ -4,6 +4,7 @@ import cn.wmkfe.bookmanage.model.BorrowInfo;
 import cn.wmkfe.bookmanage.service.BorrowInfoService;
 import cn.wmkfe.bookmanage.util.ApiResponseEnum;
 import cn.wmkfe.bookmanage.util.PageSupport;
+import cn.wmkfe.bookmanage.vo.UpdateLendVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -73,4 +74,12 @@ public class BorrowInfoController extends AbstractApiController{
         return map;
     }
 
+    //归还图书
+    @PutMapping("/giveBackBook")
+    public Map<String,Object> giveBackBooks(UpdateLendVo updateLendVo){
+        Map<String, Object> map = null;
+        int i = borrowInfoService.giveBackBook(updateLendVo);
+        map = this.resultJson(ApiResponseEnum.SUCCESS.getCode(),ApiResponseEnum.SUCCESS.getName(),null);
+        return map;
+    }
 }
