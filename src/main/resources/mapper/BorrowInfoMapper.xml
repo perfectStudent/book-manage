@@ -145,7 +145,7 @@
 
     <update id="updateWhetherLend" parameterType="cn.wmkfe.bookmanage.vo.UpdateLendVo">
         update t_borrow_info
-        set #{whether_lend}=whetherLend
+        set whether_lend=#{whetherLend}
         where reader_id=#{readerId}
     </update>
 

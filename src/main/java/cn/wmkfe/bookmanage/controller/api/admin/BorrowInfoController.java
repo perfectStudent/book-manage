@@ -75,9 +75,10 @@ public class BorrowInfoController extends AbstractApiController{
     }
 
     //归还图书
-    @PutMapping("/giveBackBook")
+    @PutMapping("/giveBackBooks")
     public Map<String,Object> giveBackBooks(UpdateLendVo updateLendVo){
         Map<String, Object> map = null;
+        System.out.println(updateLendVo.toString());
         int i = borrowInfoService.giveBackBook(updateLendVo);
         map = this.resultJson(ApiResponseEnum.SUCCESS.getCode(),ApiResponseEnum.SUCCESS.getName(),null);
         return map;

@@ -43,8 +43,8 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'util','form'], fun
             , {field: 'beOverdueDay', title: '逾期天数', align: 'center', width: 120}
             // , {fixed: 'right', title: '操作', width: 165, align: 'center', toolbar: '#borrow-info-list-bar'}  //每行的操作按钮
             , {field: 'whetherLend', title: '是否归还', align: 'center', width: 120, templet: function (d) {
-                    return d.whetherLend ? '<input type=\"checkbox\" name=\"whetherLend\" lay-filter=\"whetherLend\" lay-skin=\"switch\" lay-text=\"未归还|已归还\" checked>'
-                                            : '<input type=\"checkbox\" name=\"whetherLend\" lay-filter=\"whetherLend\" lay-skin=\"switch\" lay-text=\"未归还|已归还\" disabled>';
+                    return d.whetherLend ? '<input type=\"checkbox\" name=\"whetherLend\" lay-filter=\"whetherLend\" lay-skin=\"switch\" lay-text=\"未归还|已归还\" disabled>'
+                                            :'<input type=\"checkbox\" name=\"whetherLend\" lay-filter=\"whetherLend\" lay-skin=\"switch\" lay-text=\"未归还|已归还\" checked>' ;
                 }}
         ]]
     });
@@ -135,8 +135,8 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'util','form'], fun
         // console.log(parentTr);
         //eq(2): 代表的是表头字段位置    .layui-table-cell: 这个元素是我找表格div找出来的
         var borrowId = $(parentTr).find("td:eq(1)").find(".layui-table-cell").text();
-        var bookId = $(parentTr).find("td:eq(3)").find(".layui-table-cell").text();
-        var whetherLend=data.elem.checked;//开关是否开启，true或者false
+        var bookId = $(parentTr).find("td:eq(4)").find(".layui-table-cell").text();
+        var whetherLend=true;//开关是否开启，true或者false
         $(data.elem).attr("disabled","true");
         $(data.othis).addClass("layui-checkbox-disbaled layui-disabled");
         updateLend(bookId,borrowId,whetherLend);
