@@ -1,4 +1,4 @@
-package cn.wmkfe.bookmanage.controller.api.admin;
+package cn.wmkfe.bookmanage.controller.api;
 
 import cn.wmkfe.bookmanage.model.BorrowInfo;
 import cn.wmkfe.bookmanage.service.BorrowInfoService;
@@ -6,7 +6,6 @@ import cn.wmkfe.bookmanage.util.ApiResponseEnum;
 import cn.wmkfe.bookmanage.util.PageSupport;
 import cn.wmkfe.bookmanage.vo.UpdateLendVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

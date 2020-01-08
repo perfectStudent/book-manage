@@ -5,6 +5,25 @@ public class ClassTable {
 
     private String className;
 
+    private Integer departmentId;
+
+    @Override
+    public String toString() {
+        return "ClassTable{" +
+                "id=" + id +
+                ", className='" + className + '\'' +
+                ", departmentId=" + departmentId +
+                '}';
+    }
+
+    public Integer getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(Integer departmentId) {
+        this.departmentId = departmentId;
+    }
+
     public Integer getId() {
         return id;
     }

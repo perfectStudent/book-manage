@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录注册表单</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel='stylesheet' th:href='@{/css/all.min.css}'>
+    <link rel='stylesheet' th:href='@{/css/bootstrap.min.css}'>
+    <link rel="stylesheet" th:href='@{/css/style.css}'>
+    <link rel="stylesheet" th:href='@{/layui/css/layui.css}'>
+</head>
+<body>
+<div class="container">
+    <div class="card-wrap">
+        <div class="card border-0 shadow card--welcome is-show" id="welcome">
+            <div class="card-body">
+                <h2 class="card-title">欢迎光临</h2>
+                <p>欢迎进入登录页面</p>
+                <div class="btn-wrap"><a class="btn btn-lg btn-register js-btn" data-target="register">注册</a><a
+                        class="btn btn-lg btn-login js-btn" data-target="login">登录</a></div>
+            </div>
+        </div>
+        <div class="card border-0 shadow card--register" id="register">
+            <div class="card-body">
+                <h2 class="card-title">用户注册</h2>
+                <form class="layui-form">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">名称</label>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input type="text" name="username" placeholder="名称" lay-verify="required" autocomplete="off" class="layui-input form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">账号</label>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input type="text" name="readerId" maxlength="19" placeholder="账号" lay-verify="number|required" autocomplete="off" class="layui-input form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">密码</label>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input type="password" name="password" maxlength="19" placeholder="密码" lay-verify="required" autocomplete="off" class="layui-input form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">性别</label>
+                        <div class="layui-input-inline">
+                            <select name="gender" >
+                                <option value="0" selected="">请选择性别</option>
+                                <option value="1" th:each="gender : ${genders}" th:text="${gender.genderName}" th:value="${gender.id}">男</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">号码</label>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input type="text" name="phone" maxlength="11" placeholder="手机号码" lay-verify="required|phone" autocomplete="off" class="layui-input form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">系部</label>
+                        <div class="layui-input-inline">
+                            <select name="department" id="department" lay-filter="department">
+                                <option value="0" selected="">请选择系部</option>
+                                <option th:each="department : ${departments}" th:text="${department.departmentName}" th:value="${department.id}">保密</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">班级</label>
+                        <div class="layui-input-inline">
+                            <select name="classId" id="classId">
+                                <option value="0" selected="">请选择班级</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <button class="btn btn-lg" lay-submit lay-filter="changeInfo">注册</button>
+                </form>
+            </div>
+            <button class="btn btn-back js-btn" data-target="welcome"><i class="fas fa-angle-left"></i></button>
+        </div>
+        <div class="card border-0 shadow card--login" id="login">
+            <div class="card-body">
+                <h2 class="card-title">欢迎登录！</h2>
+                <form class="layui-form">
+                    <div class="form-group">
+                        <input class="form-control" type="text"  placeholder="账号" lay-verify="required">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" type="password" placeholder="密码" lay-verify="required">
+                    </div>
+                    <p><a href="#">忘记密码?</a></p>
+                    <button class="btn btn-lg" lay-submit lay-filter="changeLogin">登录</button>
+                </form>
+            </div>
+            <button class="btn btn-back js-btn" data-target="welcome"><i class="fas fa-angle-left"></i></button>
+        </div>
+    </div>
+</div>
+<script th:src="@{/layui/layui.js}"></script>
+<script th:src="@{/js/login/login.js}"></script>
+</body>
+</html>

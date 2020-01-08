@@ -1,4 +1,4 @@
-package cn.wmkfe.bookmanage.controller.api.admin;
+package cn.wmkfe.bookmanage.controller.api;
 
 import java.util.HashMap;
 import java.util.Map;

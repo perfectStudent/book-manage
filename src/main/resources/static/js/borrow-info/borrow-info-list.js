@@ -37,38 +37,17 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'util','form'], fun
             , {field: 'giveBackTime', align: 'center', title: '到期时间', width: 180, templet: function (d) {
                     return util.toDateString(d.giveBackTime, 'yyyy-MM-dd HH:mm:ss')
                 }}
-            , {field: 'fine', title: '罚款', align: 'center', width: 100,templet: function (d) {
-                        return d.fine+'元';
-                }}
             , {field: 'beOverdueDay', title: '逾期天数', align: 'center', width: 120}
-            // , {fixed: 'right', title: '操作', width: 165, align: 'center', toolbar: '#borrow-info-list-bar'}  //每行的操作按钮
-            , {field: 'whetherLend', title: '是否归还', align: 'center', width: 120, templet: function (d) {
+            , {field: 'fine', title: '罚款', align: 'center', width: 100,templet: function (d) {
+                    return d.fine+'元';
+                }}
+            , {field: 'whetherLend', title: '是否归还', align: 'center', width: 120,templet: function (d) {
                     return d.whetherLend ? '<input type=\"checkbox\" name=\"whetherLend\" lay-filter=\"whetherLend\" lay-skin=\"switch\" lay-text=\"未归还|已归还\" disabled>'
-                                            :'<input type=\"checkbox\" name=\"whetherLend\" lay-filter=\"whetherLend\" lay-skin=\"switch\" lay-text=\"未归还|已归还\" checked>' ;
+                        :'<input type=\"checkbox\" name=\"whetherLend\" lay-filter=\"whetherLend\" lay-skin=\"switch\" lay-text=\"未归还|已归还\" checked>';
                 }}
         ]]
     });
 
-
-    //监听行工具事件
-    table.on('tool(borrow-info-list-filter)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
-        var data = obj.data //获得当前行数据
-            , layEvent = obj.event; //获得 lay-event 对应的值
-        if (layEvent === 'detail') {
-            detailBook(data);
-            // layer.msg('查看操作');
-        } else if (layEvent === 'del') {
-            layer.confirm('真的删除行么', function (index) {
-                // obj.del(); //删除对应行（tr）的DOM结构
-                // layer.close(index);
-                //向服务端发送删除指令
-                deleteBooks(data, index);
-            });
-        } else if (layEvent === 'edit') {
-            addBook(data);
-            layer.msg('编辑操作');
-        }
-    });
 
     //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
     $(".search_btn").on("click", function () {
@@ -110,8 +89,7 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'util','form'], fun
             bookId = [];
         for (var i in data) {
             bookId.push(data[i].bookId);
-        }
-        ;
+        };
         $.ajax({
             type: "POST",
             url: "/books",

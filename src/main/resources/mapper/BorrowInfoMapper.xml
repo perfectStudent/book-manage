@@ -74,16 +74,11 @@
         ON b_i.`book_id`=b.`book_id`
         LEFT JOIN t_reader AS r
         ON b_i.`reader_id`=r.`reader_id`
-        <!--        <where>-->
-        <!--            <if test="keyword!=null and keyword!=''">-->
-        <!--                INSTR (book_name,#{keyword}) OR INSTR(author,#{keyword})-->
-        <!--            </if>-->
-        <!--        </where>-->
         where borrow_id=#{borrowId}
     </select>
 
 
-    <select id="getList" resultMap="borrowInfoMap" >
+    <select id="getList" resultMap="borrowInfoMap">
         SELECT
         b_i.borrow_id,
         b_i.lend_time,
@@ -102,11 +97,11 @@
         ON b_i.`book_id`=b.`book_id`
         LEFT JOIN t_reader AS r
         ON b_i.`reader_id`=r.`reader_id`
-        <!--        <where>-->
-        <!--            <if test="keyword!=null and keyword!=''">-->
-        <!--                INSTR (book_name,#{keyword}) OR INSTR(author,#{keyword})-->
-        <!--            </if>-->
-        <!--        </where>-->
+        <where>
+            <if test="keyword!=null and keyword!=''">
+                INSTR (b.book_name,#{keyword}) OR INSTR(r.name,#{keyword})
+            </if>
+        </where>
         order by book_id ASC limit ${from},${pageSize}
     </select>
 
@@ -132,21 +127,26 @@
     </resultMap>
 
 
-
     <select id="getTotal" resultType="int">
-        select count(borrow_id)
-        from t_borrow_info as b
-        <!--        <where>-->
-        <!--            <if test="keyword!=null and keyword!=''">-->
-        <!--                INSTR (book_name,#{keyword}) OR INSTR(author,#{keyword})-->
-        <!--            </if>-->
-        <!--        </where>-->
+        SELECT
+        count(b_i.borrow_id)
+        FROM
+        t_borrow_info AS b_i
+        LEFT JOIN t_book AS b
+        ON b_i.`book_id`=b.`book_id`
+        LEFT JOIN t_reader AS r
+        ON b_i.`reader_id`=r.`reader_id`
+        <where>
+            <if test="keyword!=null and keyword!=''">
+                INSTR (b.book_name,#{keyword}) OR INSTR(r.name,#{keyword})
+            </if>
+        </where>
     </select>
 
     <update id="updateWhetherLend" parameterType="cn.wmkfe.bookmanage.vo.UpdateLendVo">
         update t_borrow_info
         set whether_lend=#{whetherLend}
-        where reader_id=#{readerId}
+        where borrow_id=#{borrowId}
     </update>
 
 </mapper>

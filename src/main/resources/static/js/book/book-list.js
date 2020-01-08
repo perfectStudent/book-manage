@@ -17,7 +17,7 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element','form'], function ()
         , cols: [[ //表头
             {type: 'checkbox', fixed: 'left'}
             , {field: 'bookId', title: 'ID', width: 60,hide:true}
-            , {field: 'bookName', title: '书名', align: 'center',width: 100}
+            , {field: 'bookName', title: '书名', align: 'center',width: 150}
             , {field: 'author', title: '作者', align: 'center',width: 100}
             , {field: 'type', title: '分类Id', width: 120,hide:true}
             , {field: 'typeName', title: '分类',align: 'center', width: 120,templet:function(d){
@@ -29,7 +29,7 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element','form'], function ()
             , {field: 'isbn', title: '标准书号',align: 'center', width: 120}
             , {field: 'lendNumber', title: '借出数量',align: 'center', width: 100}
             , {field: 'cover', title: '封面', width: 100,hide:true}
-            , {field: 'describe', title: '描述', width: 260}
+            , {field: 'describe', title: '描述',align: 'center', width: 210}
             , {fixed: 'right',title:'操作', width: 165, align: 'center', toolbar: '#book-list-bar'}  //每行的操作按钮
         ]]
     });
@@ -87,7 +87,7 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element','form'], function ()
                     body.find(".bookName").val(edit.bookName);
                     body.find(".author").val(edit.author);
                     // body.find("#type").val(edit.type);
-                    body.find("#type").val("3");
+                    body.find("#type").val(""+edit.type+"");
                     body.find(".price").val(edit.price);
                     body.find(".press").val(edit.press);
                     body.find(".number").val(edit.number);

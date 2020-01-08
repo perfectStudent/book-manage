@@ -1,4 +1,4 @@
-package cn.wmkfe.bookmanage.controller.api.admin;
+package cn.wmkfe.bookmanage.controller.api;
 
 import cn.wmkfe.bookmanage.model.Reader;
 import cn.wmkfe.bookmanage.service.ReaderService;
