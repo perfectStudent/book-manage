@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -23,9 +24,13 @@ public class BorrowInfoController extends AbstractApiController{
     @GetMapping("/borrowInfos")
     public Map<String, Object> getBorrowInfos(@RequestParam(required = false,name = "keyword")String keyword,
                                         @RequestParam(required = false,name = "page")Integer page,
-                                        @RequestParam(required = false,name = "limit",defaultValue = "10")Integer limit) {
+                                        @RequestParam(required = false,name = "limit",defaultValue = "10")Integer limit,
+                                        HttpSession session) {
         Map<String, Object> map = null;
-        int BorrowInfoTotal = borrowInfoService.getBorrowInfoTotal(keyword);
+
+        Object loginTag = session.getAttribute("loginTag");
+
+        int BorrowInfoTotal = borrowInfoService.getBorrowInfoTotal(keyword,loginTag);
 
         PageSupport pageSupport=new PageSupport();
 
@@ -35,7 +40,7 @@ public class BorrowInfoController extends AbstractApiController{
 
         pageSupport.setTotal(BorrowInfoTotal);
 
-        List<BorrowInfo> BorrowInfoList = borrowInfoService.getBorrowInfoList(null, keyword, pageSupport.getCurrentPageNo(), limit);
+        List<BorrowInfo> BorrowInfoList = borrowInfoService.getBorrowInfoList(null, keyword,loginTag, pageSupport.getCurrentPageNo(), limit);
 
         map = this.resultJsonLayui(ApiResponseEnum.SUCCESS.getCode(), ApiResponseEnum.SUCCESS.getName(),BorrowInfoTotal, BorrowInfoList);
 
@@ -44,22 +49,13 @@ public class BorrowInfoController extends AbstractApiController{
 
     @PostMapping("/borrowInfos")
     public Map<String, Object> addBorrowInfos(BorrowInfo borrowInfo, HttpSession session) {
-        Map<String, Object> map = null;
-        Calendar calendar = Calendar.getInstance();
-        Reader reader = (Reader) session.getAttribute("reader");
-        //借阅订单号
-        borrowInfo.setBorrowId(Long.toString(calendar.getTimeInMillis()));
-        //借阅时间
-
-        borrowInfo.setLendTime(calendar.getTime());
-        //归还时间
-        calendar.setTime(new Date());
-        calendar.add(Calendar.MONDAY,+1);
-        borrowInfo.setGiveBackTime(calendar.getTime());
-        int i = borrowInfoService.addBorrowInfo(borrowInfo);
-        map = this.resultJson(ApiResponseEnum.SUCCESS.getCode(),ApiResponseEnum.SUCCESS.getName(),null);
-        return map;
-    }
+        Reader reader = (Reader) session.getAttribute("loginTag");
+        int i = borrowInfoService.addBorrowInfo(borrowInfo,reader);
+        if(i==0){
+            return this.resultJson(ApiResponseEnum.FAIL.getCode(),ApiResponseEnum.FAIL.getName(),null);
+        }
+        return this.resultJson(ApiResponseEnum.SUCCESS.getCode(),ApiResponseEnum.SUCCESS.getName(),null);
+     }
 
     //修改
     @PutMapping("/borrowInfos")

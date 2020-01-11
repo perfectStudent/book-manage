@@ -7,6 +7,12 @@ public class Admin {
 
     private String password;
 
+    private static  final String role="admin";
+
+    public static String getRole() {
+        return role;
+    }
+
     public String getAdminId() {
         return adminId;
     }

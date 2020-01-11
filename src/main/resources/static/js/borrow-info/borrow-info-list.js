@@ -23,7 +23,7 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'util','form'], fun
                     return d.reader.name;
                 }}
             , {field: 'bookId', title: '书本ID', width: 80, hide: true}
-            , {field: 'typeName', title: '书名', align: 'center', width: 120, templet: function (d) {
+            , {field: 'bookName', title: '书名', align: 'center', width: 120, templet: function (d) {
                     return d.book.bookName;
                 }}
             , {field: 'beOverdue', title: '是否逾期', align: 'center', width: 120, templet: function (d) {
@@ -41,10 +41,11 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'util','form'], fun
             , {field: 'fine', title: '罚款', align: 'center', width: 100,templet: function (d) {
                     return d.fine+'元';
                 }}
-            , {field: 'whetherLend', title: '是否归还', align: 'center', width: 120,templet: function (d) {
-                    return d.whetherLend ? '<input type=\"checkbox\" name=\"whetherLend\" lay-filter=\"whetherLend\" lay-skin=\"switch\" lay-text=\"未归还|已归还\" disabled>'
-                        :'<input type=\"checkbox\" name=\"whetherLend\" lay-filter=\"whetherLend\" lay-skin=\"switch\" lay-text=\"未归还|已归还\" checked>';
-                }}
+            , {fixed: 'right',title:'是否归还', width: 165, align: 'center', toolbar: '#borrow-info-bar'}  //每行的操作按钮
+            // , {field: 'whetherLend', title: '是否归还', align: 'center', width: 120,templet: function (d) {
+            //         return d.whetherLend ? '<input type=\"checkbox\" name=\"whetherLend\" lay-filter=\"whetherLend\" lay-skin=\"switch\" lay-text=\"未归还|已归还\" disabled>'
+            //             :'<input type=\"checkbox\" name=\"whetherLend\" lay-filter=\"whetherLend\" lay-skin=\"switch\" lay-text=\"未归还|已归还\" checked>';
+            //     }}
         ]]
     });
 

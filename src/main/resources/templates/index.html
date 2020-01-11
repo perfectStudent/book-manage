@@ -33,7 +33,7 @@
             <ul class="layui-nav layui-nav-tree"  lay-filter="test">
                 <li class="layui-nav-item layui-this jump_refresh_url"><a th:href="@{/book-list.html}" target="main_right_iframe">图书列表</a></li>
                 <li class="layui-nav-item jump_refresh_url"><a th:href="@{/borrow-info-list.html}" target="main_right_iframe">借阅列表</a></li>
-                <li class="layui-nav-item jump_refresh_url"><a th:href="@{/reader-list.html}" target="main_right_iframe" th:if="${session.admin!=null}">读者列表</a></li>
+                <li class="layui-nav-item jump_refresh_url"><a th:href="@{/reader-list.html}" target="main_right_iframe" th:if="${session.loginTag.role=='admin'}">读者列表</a></li>
             </ul>
         </div>
     </div>

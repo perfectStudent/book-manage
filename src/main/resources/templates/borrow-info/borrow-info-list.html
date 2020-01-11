@@ -25,6 +25,22 @@
 </form>
 
 <table class="layui-hide" id="borrow-info-list" lay-filter="borrow-info-list-filter"></table>
+<th:block th:switch="${session.loginTag.role}">
+<script type="text/html" id="borrow-info-bar" th:case="'admin'" >
+    {{#  if(d.whetherLend){ }}
+    <input type="checkbox" name="whetherLend" lay-filter="whetherLend" lay-skin="switch" lay-text="未归还|已归还" disabled>
+    {{#  } else { }}
+    <input type="checkbox" name="whetherLend" lay-filter="whetherLend" lay-skin="switch" lay-text="未归还|已归还" checked>
+    {{#  } }}
+</script>
+<script type="text/html" id="borrow-info-bar" th:case="*" >
+    {{#  if(d.whetherLend){ }}
+    <span class="layui-red">未归还</span>
+    {{#  } else { }}
+    <span style="color:#01AAED">已归还</span>
+    {{#  } }}
+</script>
+</th:block>
 <script th:src="@{/layui/layui.js}"></script>
 <script th:src="@{/js/borrow-info/borrow-info-list.js}"></script>
 

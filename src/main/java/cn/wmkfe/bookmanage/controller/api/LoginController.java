@@ -25,28 +25,22 @@ public class LoginController extends AbstractApiController {
                                         , @RequestParam("password") String password
                                         , @RequestParam("tag") String tag
                                         , HttpSession session) {
-        Map<String, Object> map = null;
-
-
         if ("admin".equals(tag)){
             Admin admin = adminService.getAdminOne(username);
             if (admin != null && admin.getPassword().equals(MD5Utils.MD5Lower(username,password))) {
                 admin.setPassword(null);
-                session.setAttribute("admin", admin);
-                map = this.resultJson(ApiResponseEnum.SUCCESS.getCode(), ApiResponseEnum.SUCCESS.getName(), null);
-                return map;
+                session.setAttribute("loginTag", admin);
+                return this.resultJson(ApiResponseEnum.SUCCESS.getCode(), ApiResponseEnum.SUCCESS.getName(), null);
             }
-        }else if("reader".equals(tag)){
+        }else{
             Reader reader = readerService.getByReaderId(username);
             if (reader != null && reader.getPassword().equals(MD5Utils.MD5Lower(username,password))) {
                 reader.setPassword(null);
-                session.setAttribute("reader", reader);
-                map = this.resultJson(ApiResponseEnum.SUCCESS.getCode(), ApiResponseEnum.SUCCESS.getName(), null);
-                return map;
+                session.setAttribute("loginTag", reader);
+                return this.resultJson(ApiResponseEnum.SUCCESS.getCode(), ApiResponseEnum.SUCCESS.getName(), null);
             }
         }
-        map = this.resultJson(ApiResponseEnum.LOGIN_ERR.getCode(),ApiResponseEnum.LOGIN_ERR.getName(), null);
-        return map;
+        return this.resultJson(ApiResponseEnum.LOGIN_ERR.getCode(),ApiResponseEnum.LOGIN_ERR.getName(), null);
     }
 
     @RequestMapping("/registerUser")

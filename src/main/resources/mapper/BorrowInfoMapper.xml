@@ -7,7 +7,7 @@
                  reader_id, book_id, be_overdue,
                  fine, be_overdue_day)
         values (#{borrowId},#{lendTime},#{giveBackTime},
-                #{readerId},#{beOverdue},#{bookId}
+                #{readerId},#{bookId},#{beOverdue},
                 #{fine},#{beOverdueDay});
     </insert>
 
@@ -55,6 +55,27 @@
         where borrow_id=#{borrowId}
     </update>
 
+    <select id="getByReaderIdAndBookId" resultMap="borrowInfoMap">
+        SELECT
+        b_i.borrow_id,
+        b_i.lend_time,
+        b_i.give_back_time,
+        b_i.reader_id,
+        b_i.book_id,
+        b_i.be_overdue,
+        b_i.fine,
+        b_i.be_overdue_day,
+        b_i.whether_lend,
+        b.`book_name`,
+        r.`name`
+        FROM
+        t_borrow_info AS b_i
+        LEFT JOIN t_book AS b
+        ON b_i.`book_id`=b.`book_id`
+        LEFT JOIN t_reader AS r
+        ON b_i.`reader_id`=r.`reader_id`
+        where b_i.reader_id=#{readerId} and b_i.book_id=#{bookId}
+    </select>
     <select id="getByBorrowInfoId" resultMap="borrowInfoMap">
         SELECT
         b_i.borrow_id,
@@ -99,11 +120,17 @@
         ON b_i.`reader_id`=r.`reader_id`
         <where>
             <if test="keyword!=null and keyword!=''">
-                INSTR (b.book_name,#{keyword}) OR INSTR(r.name,#{keyword})
+                INSTR (b.book_name,#{keyword})
+                OR INSTR(r.name,#{keyword})
+                OR INSTR(b_i.reader_id,#{keyword})
+            </if>
+            <if test="readerId!=null and readerId!=''">
+                and r.reader_id=#{readerId}
             </if>
         </where>
         order by book_id ASC limit ${from},${pageSize}
     </select>
+
 
     <resultMap id="borrowInfoMap" type="cn.wmkfe.bookmanage.model.BorrowInfo">
         <id column="borrow_id" property="borrowId"></id>
@@ -138,7 +165,12 @@
         ON b_i.`reader_id`=r.`reader_id`
         <where>
             <if test="keyword!=null and keyword!=''">
-                INSTR (b.book_name,#{keyword}) OR INSTR(r.name,#{keyword})
+                INSTR (b.book_name,#{keyword})
+                OR INSTR(r.name,#{keyword})
+                OR INSTR(b_i.reader_id,#{keyword})
+            </if>
+            <if test="readerId!=null and readerId!=''">
+                and r.reader_id=#{readerId}
             </if>
         </where>
     </select>

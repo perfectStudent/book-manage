@@ -12,6 +12,11 @@ public class Reader {
   private long collegeId;
   private long majorId;
   private long classId;
+  private static  final String role="reader";
+
+  public static String getRole() {
+    return role;
+  }
 
   private Class classModel;
 

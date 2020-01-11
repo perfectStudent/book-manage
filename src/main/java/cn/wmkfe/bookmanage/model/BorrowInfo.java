@@ -12,7 +12,7 @@ public class BorrowInfo {
 
     private String readerId;
 
-    private String bookId;
+    private Integer bookId;
 
     private Boolean beOverdue;
 
@@ -22,17 +22,34 @@ public class BorrowInfo {
 
     private Boolean whetherLend;
 
-    public Boolean getWhetherLend() {
-        return whetherLend;
-    }
-
-    public void setWhetherLend(Boolean whetherLend) {
-        this.whetherLend = whetherLend;
-    }
-
     private Book book;
 
     private Reader reader;
+
+    @Override
+    public String toString() {
+        return "BorrowInfo{" +
+                "borrowId='" + borrowId + '\'' +
+                ", lendTime=" + lendTime +
+                ", giveBackTime=" + giveBackTime +
+                ", readerId='" + readerId + '\'' +
+                ", bookId=" + bookId +
+                ", beOverdue=" + beOverdue +
+                ", fine=" + fine +
+                ", beOverdueDay='" + beOverdueDay + '\'' +
+                ", whetherLend=" + whetherLend +
+                ", book=" + book +
+                ", reader=" + reader +
+                '}';
+    }
+
+    public Reader getReader() {
+        return reader;
+    }
+
+    public void setReader(Reader reader) {
+        this.reader = reader;
+    }
 
     public Book getBook() {
         return book;
@@ -47,7 +64,7 @@ public class BorrowInfo {
     }
 
     public void setBorrowId(String borrowId) {
-        this.borrowId = borrowId == null ? null : borrowId.trim();
+        this.borrowId = borrowId;
     }
 
     public Date getLendTime() {
@@ -71,15 +88,15 @@ public class BorrowInfo {
     }
 
     public void setReaderId(String readerId) {
-        this.readerId = readerId == null ? null : readerId.trim();
+        this.readerId = readerId;
     }
 
-    public String getBookId() {
+    public Integer getBookId() {
         return bookId;
     }
 
-    public void setBookId(String bookId) {
-        this.bookId = bookId == null ? null : bookId.trim();
+    public void setBookId(Integer bookId) {
+        this.bookId = bookId;
     }
 
     public Boolean getBeOverdue() {
@@ -98,19 +115,19 @@ public class BorrowInfo {
         this.fine = fine;
     }
 
-    public Reader getReader() {
-        return reader;
-    }
-
-    public void setReader(Reader reader) {
-        this.reader = reader;
-    }
-
     public String getBeOverdueDay() {
         return beOverdueDay;
     }
 
     public void setBeOverdueDay(String beOverdueDay) {
-        this.beOverdueDay = beOverdueDay == null ? null : beOverdueDay.trim();
+        this.beOverdueDay = beOverdueDay;
+    }
+
+    public Boolean getWhetherLend() {
+        return whetherLend;
+    }
+
+    public void setWhetherLend(Boolean whetherLend) {
+        this.whetherLend = whetherLend;
     }
 }

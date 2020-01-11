@@ -182,6 +182,8 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element','form'], function ()
 
     //图书借阅开始
     function lendBook(data) {
+        //加载层
+        var index = layer.load(0); //0代表加载的风格，支持0-2
         $.ajax({
             type: "POST",
             url: "/borrowInfos",
@@ -191,9 +193,22 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element','form'], function ()
             dataType: "json",
             success: function (res) {
                 tableIndex.reload();
-                layer.close(index);
+                setTimeout(function(){
+                    layer.closeAll('loading');
+                    if(res.code==0){
+                        layer.msg("借阅成功!");
+                    }else{
+                        layer.msg("借阅失败!");
+                    }
+                }, 2000);
+            },
+            error:function (res) {
+                layer.msg("借阅失败!");
+                layer.closeAll('loading');
             }
-        })
+        });
+
+
     }
     //图书借阅结束
 });
