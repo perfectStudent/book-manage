@@ -71,11 +71,20 @@
                     </div>
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label">系部</label>
+                        <label class="layui-form-label">学院</label>
                         <div class="layui-input-inline">
-                            <select name="department" id="department" lay-filter="department">
-                                <option value="0" selected="">请选择系部</option>
-                                <option th:each="department : ${departments}" th:text="${department.departmentName}" th:value="${department.id}">保密</option>
+                            <select name="collegeId" id="collegesId" lay-filter="colleges">
+                                <option value="0" selected="">请选择</option>
+                                <option th:each="college : ${colleges}" th:text="${college.collegeName}" th:value="${college.id}">保密</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">专业</label>
+                        <div class="layui-input-inline">
+                            <select name="majorId" id="majorId" lay-filter="major">
+                                <option value="0" selected="">请选择</option>
                             </select>
                         </div>
                     </div>
@@ -84,7 +93,7 @@
                         <label class="layui-form-label">班级</label>
                         <div class="layui-input-inline">
                             <select name="classId" id="classId">
-                                <option value="0" selected="">请选择班级</option>
+                                <option value="0" selected="">请选择</option>
                             </select>
                         </div>
                     </div>
@@ -99,13 +108,40 @@
             <div class="card-body">
                 <h2 class="card-title">欢迎登录！</h2>
                 <form class="layui-form">
-                    <div class="form-group">
-                        <input class="form-control" type="text"  placeholder="账号" lay-verify="required">
+<!--                    <div class="form-group">-->
+<!--                        <input class="form-control" type="text"  placeholder="账号" lay-verify="required">-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <input class="form-control" type="password" placeholder="密码" lay-verify="required">-->
+<!--                    </div>-->
+<!--                    <p><a href="#">忘记密码?</a></p>-->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">账号</label>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input type="text" name="username"  placeholder="账号" lay-verify="required" autocomplete="off" class="layui-input form-control">
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <input class="form-control" type="password" placeholder="密码" lay-verify="required">
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">密码</label>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input type="password" name="password" maxlength="19" placeholder="密码" lay-verify="required" autocomplete="off" class="layui-input form-control">
+                            </div>
+                        </div>
                     </div>
-                    <p><a href="#">忘记密码?</a></p>
+
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <input type="radio" name="tag" value="admin" title="管理员" ><div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon"></i><div>管理员</div></div>
+                            <input type="radio" name="tag" value="reader" title="读者" checked=""><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>读者</div></div>
+                        </div>
+                        </div>
+                    </div>
+
                     <button class="btn btn-lg" lay-submit lay-filter="changeLogin">登录</button>
                 </form>
             </div>

@@ -1,9 +1,9 @@
 package cn.wmkfe.bookmanage.controller;
 
-import cn.wmkfe.bookmanage.model.Department;
+import cn.wmkfe.bookmanage.model.College;
 import cn.wmkfe.bookmanage.model.Gender;
 import cn.wmkfe.bookmanage.model.Type;
-import cn.wmkfe.bookmanage.service.DepartmentService;
+import cn.wmkfe.bookmanage.service.CollegeService;
 import cn.wmkfe.bookmanage.service.GenderService;
 import cn.wmkfe.bookmanage.service.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class PageController {
     @Autowired
     private GenderService genderService;
     @Autowired
-    private DepartmentService departmentService;
+    private CollegeService collegeService;
     //首页
     @RequestMapping(value = {"/","/index"})
     public String indexPage(){
@@ -33,10 +33,10 @@ public class PageController {
     public String loginPage(Model model){
         //获取性别列表
         List<Gender> genderAllList = genderService.getGenderAllList();
-        //获取系部列表
-        List<Department> getDepartmentAllList = departmentService.getDepartmentAllList();
+        //获取学院列表
+        List<College> getCollegeAllList = collegeService.getCollegeAllList();
         model.addAttribute("genders",genderAllList);
-        model.addAttribute("departments",getDepartmentAllList);
+        model.addAttribute("colleges",getCollegeAllList);
         return "login";
     }
 

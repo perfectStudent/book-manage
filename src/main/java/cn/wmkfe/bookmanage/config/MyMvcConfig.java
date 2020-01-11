@@ -2,10 +2,11 @@ package cn.wmkfe.bookmanage.config;
 
 import cn.wmkfe.bookmanage.handler.MyHandler;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-//@Configuration
+@Configuration
 public class MyMvcConfig extends WebMvcConfigurerAdapter {
     @Bean
     public WebMvcConfigurerAdapter webMvcConfigurerAdapter(){
@@ -15,7 +16,7 @@ public class MyMvcConfig extends WebMvcConfigurerAdapter {
                 super.addInterceptors(registry);
                 registry.addInterceptor(new MyHandler())
                         .addPathPatterns("/**")
-                        .excludePathPatterns("/login.html","/checkLogin");
+                        .excludePathPatterns("/login.html","/checkLogin","/majors/*","/classs/*","/registerUser");
             }
         };
         return adapter;

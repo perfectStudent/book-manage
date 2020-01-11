@@ -17,19 +17,21 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'util','form'], fun
         , cols: [[ //表头
             {type: 'checkbox', fixed: 'left'}
             , {field: 'readerId', title: '读者ID',align: 'center', width: 150}
-            , {field: 'password', title: '密码', align: 'center', width: 120,templet: function (d) {
+            , {field: 'password', title: '密码', align: 'center', width: 120,hide: true,templet: function (d) {
                     return '* * * * * *';
                 }}
             , {field: 'name', title: '读者姓名', align: 'center',width: 180}
-            , {field: 'avatar', title: '书名', align: 'center', width: 120, hide: true}
-            , {field: 'phone', title: '号码', align: 'center', width: 180}
-            , {field: 'departmentName', title: '专业', align: 'center', width: 220, templet: function (d) {
-                    return d.departmentModel.departmentName;
+            , {field: 'phone', title: '号码', align: 'center', width: 110}
+            , {field: 'collegeName', title: '学院', align: 'center', width: 210, templet: function (d) {
+                    return d.collegeModel.collegeName;
                 }}
-            , {field: 'classTable', title: '班级', align: 'center', width: 120, templet: function (d) {
-                    return d.classTable.className;
+            , {field: 'majorName', title: '专业', align: 'center', width: 210, templet: function (d) {
+                    return d.majorModel.majorName;
                 }}
-            , {field: 'genderModel', title: '性别', align: 'center', width: 120, templet: function (d) {
+            , {field: 'className', title: '班级', align: 'center', width: 120, templet: function (d) {
+                    return d.classModel.className;
+                }}
+            , {field: 'genderName', title: '性别', align: 'center', width: 110, templet: function (d) {
                     return d.genderModel.genderName;
                 }}
             , {fixed: 'right', title: '操作', width: 165, align: 'center', toolbar: '#reader-list-bar'}  //每行的操作按钮

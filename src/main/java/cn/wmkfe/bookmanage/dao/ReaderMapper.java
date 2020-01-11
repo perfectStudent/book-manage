@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface ReaderMapper {
     int add(Reader reader);
-    int delete(Integer[] readerId);
+    int delete(String[] readerId);
     int update(Reader reader);
-    Reader getByReaderId(Integer readerId);
+    Reader getByReaderId(String readerId);
     List<Reader> getList(@Param("reader") Reader reader,
                        @Param("keyword") String keyword,
                        @Param("from") Integer from,

@@ -56,7 +56,7 @@ public class ReaderController extends AbstractApiController {
 
     //删除
     @DeleteMapping("/readers")
-    public Map<String, Object> deleteReader(@RequestParam(name = "ids[]") Integer[] ReaderId) {
+    public Map<String, Object> deleteReader(@RequestParam(name = "ids[]") String[] ReaderId) {
         Map<String, Object> map = null;
         int i = readerService.deleteReader(ReaderId);
         map = this.resultJson(ApiResponseEnum.SUCCESS.getCode(),ApiResponseEnum.SUCCESS.getName(),null);
@@ -64,10 +64,10 @@ public class ReaderController extends AbstractApiController {
     }
 
     //根据id查询
-    @GetMapping("/readers/{id}")
-    public Map<String, Object> getReaderById(@PathVariable("id")Integer id) {
+    @GetMapping("/readers/{readerId}")
+    public Map<String, Object> getReaderById(@PathVariable("readerId")String readerId) {
         Map<String, Object> map = null;
-        Reader ReaderByReaderId = readerService.getByReaderId(id);
+        Reader ReaderByReaderId = readerService.getByReaderId(readerId);
         map = this.resultJson(ApiResponseEnum.SUCCESS.getCode(),ApiResponseEnum.SUCCESS.getName(),ReaderByReaderId);
         return map;
     }

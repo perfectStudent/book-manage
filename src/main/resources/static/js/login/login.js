@@ -3,48 +3,106 @@ layui.use(['element', 'jquery', 'form'], function () {
         , form = layui.form;//表单
     form.render();
     form.on('submit(changeInfo)', function(data){
-        console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
-        console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+        register(data.field);
         return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
     });
     form.on('submit(changeLogin)', function(data){
-        console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
-        console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
-        console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+        checkLogin(data.field);
         return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
     });
-
     //注册请求的方法 开始
     function register(data){
         $.post("/registerUser",{
-            username:data.username,                                    //称呼
-            readerId:data.readerId,                                //账号
-            password : data.password                        //密码
+            readerId:data.readerId,                         //账号
+            password:data.password,                         //密码
+            name : data.username,                               //称呼
+            gender : data.gender,                        //性别
+            phone : data.phone,                          //号码
+            collegeId : data.collegeId,                  //学院ID
+            majorId : data.majorId,                       //专业ID
+            classId : data.classId                        //班级ID
         },function(res){
-            if(res.code==200){
+            if(res.code==0){
                 setTimeout(function(){
-                    window.location.href = "/admin/index.html";
-                },1000);
-            }else if(res.code=202){
-                setTimeout(function(){
-                    layer.msg(res.msg);
-                    $("#loginBtn").text("登录").attr("disabled",false).removeClass("layui-disabled");
+                    window.location.href = "/login.html";
                 },1000);
             }else {
                 setTimeout(function(){
                     layer.msg(res.msg);
-                    $("#loginBtn").text("登录").attr("disabled",false).removeClass("layui-disabled");
                 },1000);
             }
-        })
+        });
+    }
+    //注册请求的方法 结束
+    //注册请求的方法 开始
+    function checkLogin(data){
+        $.post("/checkLogin",{
+            username:data.username,                         //账号
+            password:data.password,                           //密码
+            tag:data.tag                                    //身份
+        },function(res){
+            if(res.code==0){
+                setTimeout(function(){
+                    window.location.href = "/index.html";
+                },1000);
+            }else {
+                setTimeout(function(){
+                    layer.msg(res.msg);
+                },1000);
+            }
+        });
     }
     //注册请求的方法 结束
 
-    //监听系部下拉框开始
-    form.on('select(department)', function(data){
+    //监听学院下拉框开始
+    form.on('select(colleges)', function(data){
+        if(data.value>0){
+            majorRequest(data);
+        }else{
+            $("#majorId option").remove();
+            $("#majorId").append("<option value=''>请选择</option>");
+            $("#classId option").remove();
+            $("#classId").append("<option value=''>请选择</option>");
+        }
+    });
+    //监听学院下拉框结束
+
+    //监听专业下拉框开始
+    form.on('select(major)', function(data){
         // console.log(data.value); //得到被选中的值
         // console.log(data.othis); //得到美化后的DOM对象
-        $.get("/genders/"+data.value,{
+        if(data.value>0){
+            classsRequest(data);
+        }else{
+            $("#classId option").remove();
+            $("#classId").append("<option value=''>请选择</option>");
+        }
+
+    });
+    //监听专业下拉框结束
+
+    //获取专业列表请求
+    function majorRequest(data) {
+        $.get("/majors/"+data.value,{
+
+        },function(res){
+            var data=res.data;
+            $("#majorId option").remove();
+            $("#majorId").append("<option value=''>请选择</option>");
+            if (data != 0) {
+                for ( var i = 0; i < data.length; i++) {
+                    var id = data[i].id;
+                    var majorName = data[i].majorName;
+                    $("#majorId").append("<option value="+id+">"+ majorName + "</option>");
+                }
+                //刷新下拉列表
+                form.render('select');
+            }
+        });
+    }
+    //获取班级列表请求
+    function classsRequest(data) {
+        $.get("/classs/"+data.value,{
 
         },function(res){
             var data=res.data;
@@ -60,8 +118,7 @@ layui.use(['element', 'jquery', 'form'], function () {
                 form.render('select');
             }
         });
-    });
-    //监听系部下拉框结束
+    }
 
 });
 const cards = document.querySelectorAll('.card');

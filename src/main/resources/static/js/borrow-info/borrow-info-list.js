@@ -19,7 +19,7 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'util','form'], fun
             {type: 'checkbox', fixed: 'left'}
             , {field: 'borrowId', title: '借阅订单号',align: 'center', width: 100,hide: true}
             , {field: 'readerId', title: '读者ID',align: 'center', width: 100}
-            , {field: 'typeName', title: '读者姓名', align: 'center', width: 120, templet: function (d) {
+            , {field: 'name', title: '读者姓名', align: 'center', width: 120, templet: function (d) {
                     return d.reader.name;
                 }}
             , {field: 'bookId', title: '书本ID', width: 80, hide: true}

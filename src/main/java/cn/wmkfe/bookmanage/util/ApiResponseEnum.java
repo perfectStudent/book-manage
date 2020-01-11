@@ -5,6 +5,7 @@ public enum ApiResponseEnum {
 	SUCCESS("0", "成功"),
 	ERROR_PARAM("-2", "参数错误"),
 	ERROR_DATA_EMPTY("-3", "无数据"),
+	LOGIN_ERR("-4", "用户名或密码错误！"),
 	FAIL("-1", "失败");
 	
 	private String code;

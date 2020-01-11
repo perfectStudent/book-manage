@@ -52,6 +52,9 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element','form'], function ()
         } else if (layEvent === 'edit') {
             addBook(data);
             layer.msg('编辑操作');
+        }else if (layEvent === 'lend') {
+            console.log(data);
+            lendBook(data);
         }
     });
 
@@ -176,4 +179,21 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element','form'], function ()
         })
     }
 
+
+    //图书借阅开始
+    function lendBook(data) {
+        $.ajax({
+            type: "POST",
+            url: "/borrowInfos",
+            data: {
+                bookId: data.bookId
+            },
+            dataType: "json",
+            success: function (res) {
+                tableIndex.reload();
+                layer.close(index);
+            }
+        })
+    }
+    //图书借阅结束
 });

@@ -1,6 +1,7 @@
 package cn.wmkfe.bookmanage.controller.api;
 
 import cn.wmkfe.bookmanage.model.BorrowInfo;
+import cn.wmkfe.bookmanage.model.Reader;
 import cn.wmkfe.bookmanage.service.BorrowInfoService;
 import cn.wmkfe.bookmanage.util.ApiResponseEnum;
 import cn.wmkfe.bookmanage.util.PageSupport;
@@ -8,6 +9,9 @@ import cn.wmkfe.bookmanage.vo.UpdateLendVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -39,9 +43,20 @@ public class BorrowInfoController extends AbstractApiController{
     }
 
     @PostMapping("/borrowInfos")
-    public Map<String, Object> addBorrowInfos(BorrowInfo BorrowInfo) {
+    public Map<String, Object> addBorrowInfos(BorrowInfo borrowInfo, HttpSession session) {
         Map<String, Object> map = null;
-        int i = borrowInfoService.addBorrowInfo(BorrowInfo);
+        Calendar calendar = Calendar.getInstance();
+        Reader reader = (Reader) session.getAttribute("reader");
+        //借阅订单号
+        borrowInfo.setBorrowId(Long.toString(calendar.getTimeInMillis()));
+        //借阅时间
+
+        borrowInfo.setLendTime(calendar.getTime());
+        //归还时间
+        calendar.setTime(new Date());
+        calendar.add(Calendar.MONDAY,+1);
+        borrowInfo.setGiveBackTime(calendar.getTime());
+        int i = borrowInfoService.addBorrowInfo(borrowInfo);
         map = this.resultJson(ApiResponseEnum.SUCCESS.getCode(),ApiResponseEnum.SUCCESS.getName(),null);
         return map;
     }

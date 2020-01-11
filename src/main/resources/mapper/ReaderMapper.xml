@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.wmkfe.bookmanage.dao.ReaderMapper">
     <insert id="add" parameterType="cn.wmkfe.bookmanage.model.Reader">
-       insert into t_reader (reader_id, password, t_reader.name, gender, avatar, phone, department, class)
-       values (#{readerId},#{password},#{name},#{gender},#{avatar},#{phone},#{department},#{class})
+       insert into t_reader (reader_id, password, t_reader.name, gender, avatar, phone, college_id,major_id,class_id)
+       values (#{readerId},#{password},#{name},#{gender},#{avatar},#{phone},#{collegeId},#{majorId},#{classId})
     </insert>
     <delete id="delete">
         delete from t_reader
@@ -34,26 +34,32 @@
             <if test="phone !=null and phone!=''">
                 t_Reader.phone=#{phone},
             </if>
-            <if test="department !=null">
-                department=#{department},
+            <if test="collegeId !=null">
+                college_id=#{collegeId},
             </if>
-            <if test="class !=null">
-                class=#{class}
+            <if test="majorId !=null">
+                major_id=#{majorId},
+            </if>
+            <if test="classId !=null">
+                class_id=#{classId}
             </if>
         </set>
         where reader_id=#{readerId}
     </update>
 
     <select id="getByReaderId" resultMap="readerMap">
-        select r.reader_id, r.password, r.name, r.gender, r.avatar, r.phone, r.department, r.class,
-                 g.gender_name, c_t.class_name,d.department_name
+        select r.reader_id, r.password, r.name, r.gender, r.avatar,
+        r.phone, r.college_id, r.major_id,r.class_id,
+        g.gender_name,co.college_name,m.major_name,cl.class_name
         from t_reader as r
         left join t_gender as g
         on r.gender=g.id
-        left join t_class_table as c_t
-        on r.class=c_t.id
-        LEFT JOIN t_department AS d
-        ON r.department = d.id
+        LEFT JOIN t_college AS co
+        ON r.college_id = co.id
+        left join t_class as cl
+        on r.class_id=cl.id
+        LEFT JOIN t_major AS m
+        ON r.major_id = m.id
         where reader_id=#{readerId}
     </select>
 
@@ -65,61 +71,58 @@
         <result column="gender" property="gender"></result>
         <result column="avatar" property="avatar"></result>
         <result column="phone" property="phone"></result>
-        <result column="department" property="department"></result>
-        <result column="class" property="class"></result>
-        <association property="book" javaType="cn.wmkfe.bookmanage.model.Book">
+        <result column="college_id" property="collegeId"></result>
+        <result column="major_id" property="majorId"></result>
+        <result column="class_id" property="classId"></result>
+
+        <association property="genderModel" javaType="cn.wmkfe.bookmanage.model.Gender">
             <result column="gender_name" property="genderName"></result>
         </association>
-        <association property="classTable" javaType="cn.wmkfe.bookmanage.model.ClassTable">
+
+        <association property="collegeModel" javaType="cn.wmkfe.bookmanage.model.College">
+            <result column="college_name" property="collegeName"></result>
+        </association>
+
+        <association property="majorModel" javaType="cn.wmkfe.bookmanage.model.Major">
+            <result column="major_name" property="majorName"></result>
+        </association>
+
+        <association property="classModel" javaType="cn.wmkfe.bookmanage.model.Class">
             <result column="class_name" property="className"></result>
         </association>
     </resultMap>
 
-    <select id="getList" resultMap="getListMap">
-        select r.reader_id, r.password, r.name, r.gender, r.avatar, r.phone, r.department, r.class,
-        g.gender_name, c_t.class_name,d.department_name
+    <select id="getList" resultMap="readerMap">
+        select r.reader_id, r.password, r.name, r.gender, r.avatar, r.phone, r.college_id, r.major_id,r.class_id,
+        g.gender_name,co.college_name,m.major_name,cl.class_name
         from t_reader as r
         left join t_gender as g
         on r.gender=g.id
-        left join t_class_table as c_t
-        on r.class=c_t.id
-        LEFT JOIN t_department AS d
-        ON r.department = d.id
+        LEFT JOIN t_college AS co
+        ON r.college_id = co.id
+        left join t_class as cl
+        on r.class_id=cl.id
+        LEFT JOIN t_major AS m
+        ON r.major_id = m.id
         <where>
             <if test="keyword!=null and keyword!=''">
-                INSTR (r.name,#{keyword}) OR INSTR(c_t.class_name,#{keyword})
+                INSTR (r.name,#{keyword})
+                or
+                INSTR(cl.class_name,#{keyword})
             </if>
         </where>
         order by r.reader_id ASC limit ${from},${pageSize}
     </select>
 
-    <resultMap id="getListMap" type="cn.wmkfe.bookmanage.model.Reader">
-        <id column="reader_id" property="readerId"></id>
-        <result column="password" property="password"/>
-        <result column="name" property="name"/>
-        <result column="gender" property="gender"/>
-        <result column="avatar" property="avatar"/>
-        <result column="phone" property="phone"/>
-        <result column="department" property="department"/>
-        <result column="class" property="classId"/>
-        <association property="genderModel" javaType="cn.wmkfe.bookmanage.model.Gender">
-            <result column="gender_name" property="genderName"/>
-        </association>
-        <association property="classTable" javaType="cn.wmkfe.bookmanage.model.ClassTable">
-            <result column="class_name" property="className"/>
-        </association>
-        <association property="departmentModel" javaType="cn.wmkfe.bookmanage.model.Department">
-            <result column="department_name" property="departmentName"/>
-        </association>
-    </resultMap>
-
 
     <select id="getTotal" resultType="int">
         select count(reader_id)
         from t_reader as r
+        left join t_class as cl
+        on r.class_id=cl.id
         <where>
             <if test="keyword!=null and keyword!=''">
-                INSTR (r.name,#{keyword}) OR INSTR(c_t.class_name,#{keyword})
+                INSTR (r.name,#{keyword}) OR INSTR(cl.class_name,#{keyword})
             </if>
         </where>
     </select>

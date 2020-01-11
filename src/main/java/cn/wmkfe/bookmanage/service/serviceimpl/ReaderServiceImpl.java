@@ -20,7 +20,7 @@ public class ReaderServiceImpl implements ReaderService {
 
     @Transactional
     @Override
-    public int deleteReader(Integer[] readerId) {
+    public int deleteReader(String[] readerId) {
         return readerMapper.delete(readerId);
     }
 
@@ -31,7 +31,7 @@ public class ReaderServiceImpl implements ReaderService {
     }
 
     @Override
-    public Reader getByReaderId(Integer readerId) {
+    public Reader getByReaderId(String readerId) {
         return readerMapper.getByReaderId(readerId);
     }
 
