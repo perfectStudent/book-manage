@@ -45,7 +45,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public int getBookTotal(String keyword) {
-        return bookMapper.getTotal(keyword);
+    public int getBookTotal(String keyword,Book book) {
+        return bookMapper.getTotal(keyword,book);
     }
 }

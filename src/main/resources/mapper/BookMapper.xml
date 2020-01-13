@@ -70,6 +70,9 @@
             <if test="keyword!=null and keyword!=''">
                 INSTR (book_name,#{keyword}) OR INSTR(author,#{keyword})
             </if>
+            <if test="book.type!=null">
+                and b.type=#{book.type}
+            </if>
         </where>
         order by book_id ASC limit ${from},${pageSize}
     </select>
@@ -99,6 +102,9 @@
         <where>
             <if test="keyword!=null and keyword!=''">
                 INSTR (book_name,#{keyword}) OR INSTR(author,#{keyword})
+            </if>
+            <if test="book.type!=null">
+                and b.type=#{book.type}
             </if>
         </where>
     </select>

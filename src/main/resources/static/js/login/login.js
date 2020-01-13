@@ -1,6 +1,7 @@
-layui.use(['element', 'jquery', 'form'], function () {
+layui.use(['element', 'jquery', 'form','layer'], function () {
     var $ = layui.jquery //jquery
-        , form = layui.form;//表单
+        , form = layui.form//表单
+        , layer = layui.layer;//弹出层
     form.render();
     form.on('submit(changeInfo)', function(data){
         register(data.field);
@@ -22,12 +23,15 @@ layui.use(['element', 'jquery', 'form'], function () {
             majorId : data.majorId,                       //专业ID
             classId : data.classId                        //班级ID
         },function(res){
+            var index = layer.msg('提交中，请稍候',{icon: 16,time:false,shade:0.8});
             if(res.code==0){
                 setTimeout(function(){
+                    layer.close(index);
                     window.location.href = "/login.html";
                 },1000);
             }else {
                 setTimeout(function(){
+                    layer.close(index);
                     layer.msg(res.msg);
                 },1000);
             }
@@ -41,8 +45,10 @@ layui.use(['element', 'jquery', 'form'], function () {
             password:data.password,                           //密码
             tag:data.tag                                    //身份
         },function(res){
+            var index = layer.msg('提交中，请稍候',{icon: 16,time:false,shade:0.8});
             if(res.code==0){
                 setTimeout(function(){
+                    layer.close(index);
                     window.location.href = "/index.html";
                 },1000);
             }else {

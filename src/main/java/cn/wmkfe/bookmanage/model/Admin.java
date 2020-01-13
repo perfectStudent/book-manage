@@ -6,11 +6,15 @@ public class Admin {
     private String adminName;
 
     private String password;
-
     private static  final String role="admin";
 
-    public static String getRole() {
-        return role;
+    @Override
+    public String toString() {
+        return "Admin{" +
+                "adminId='" + adminId + '\'' +
+                ", adminName='" + adminName + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 
     public String getAdminId() {
@@ -18,7 +22,7 @@ public class Admin {
     }
 
     public void setAdminId(String adminId) {
-        this.adminId = adminId == null ? null : adminId.trim();
+        this.adminId = adminId;
     }
 
     public String getAdminName() {
@@ -26,7 +30,7 @@ public class Admin {
     }
 
     public void setAdminName(String adminName) {
-        this.adminName = adminName == null ? null : adminName.trim();
+        this.adminName = adminName;
     }
 
     public String getPassword() {
@@ -34,6 +38,10 @@ public class Admin {
     }
 
     public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
+        this.password = password;
+    }
+
+    public static String getRole() {
+        return role;
     }
 }

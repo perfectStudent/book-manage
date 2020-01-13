@@ -18,13 +18,13 @@ public class BookAPIController extends AbstractApiController {
 
     @GetMapping("/books")
     public Map<String, Object> getBooks(@RequestParam(required = false,name = "keyword")String keyword,
-                                        @RequestParam(required = false,name = "type")Integer type,
+                                        @RequestParam(required = false,name = "bookType")Integer type,
                                         @RequestParam(required = false,name = "page")Integer page,
                                         @RequestParam(required = false,name = "limit",defaultValue = "10")Integer limit) {
         Map<String, Object> map = null;
         Book book=new Book();
         book.setType(type);
-        int bookTotal = bookService.getBookTotal(keyword);
+        int bookTotal = bookService.getBookTotal(keyword,book);
 
         PageSupport pageSupport=new PageSupport();
 

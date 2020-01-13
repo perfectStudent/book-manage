@@ -49,8 +49,13 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'upload', 'form','element'], f
             },
             dataType:"json",
             success:function (res) {
-                // tableIndex.reload();
-                parent.layui.table.reload('bookListTable');
+                var index = layer.msg('提交中，请稍候',{icon: 16,time:false,shade:0.8});
+                setTimeout(function () {
+                    layer.close(index);
+                    parent.layui.table.reload('bookListTable');
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index);
+                }, 2000)
             }
         })
     }
@@ -75,7 +80,13 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'upload', 'form','element'], f
             },
             dataType:"json",
             success:function (res) {
-                parent.layui.table.reload('bookListTable');
+                var index = layer.msg('提交中，请稍候',{icon: 16,time:false,shade:0.8});
+                setTimeout(function () {
+                    layer.close(index);
+                    parent.layui.table.reload('bookListTable');
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index);
+                }, 2000)
             }
         })
     }

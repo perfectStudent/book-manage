@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, login-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>基本资料</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{/css/public.css}" media="all">
+</head>
+<body class="childrenBody">
+<div class="content">
+    <form class="layui-form baseData">
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-block">
+                    <input type="text" name="username" th:value="${session.loginTag.getLoginTagUserName()}" disabled="disabled" lay-verify="required" autocomplete="off" class="layui-input form-control">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">账号</label>
+            <div class="layui-input-block">
+                    <input type="text" name="readerId" th:value="${session.loginTag.getLoginTagId()}"  maxlength="19" disabled="disabled" lay-verify="number|required" autocomplete="off" class="layui-input form-control">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-block">
+                    <input type="text" name="genderId" disabled="disabled" th:value="${session.loginTag.getLoginTagGenderName()}"  maxlength="19" placeholder="账号" lay-verify="number|required" autocomplete="off" class="layui-input form-control">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">号码</label>
+            <div class="layui-input-block">
+                    <input type="text" name="phone" disabled="disabled" th:value="${session.loginTag.getLoginTagPhone()}" maxlength="11"  lay-verify="required|phone" autocomplete="off" class="layui-input form-control">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">学院</label>
+            <div class="layui-input-block">
+                    <input type="text" name="college" disabled="disabled" th:value="${session.loginTag.getLoginTagCollegeName()}" maxlength="11" lay-verify="required|phone" autocomplete="off" class="layui-input form-control">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">专业</label>
+            <div class="layui-input-block">
+                    <input type="text" name="major" disabled="disabled" th:value="${session.loginTag.getLoginTagMajorName()}" maxlength="11"  lay-verify="required|phone" autocomplete="off" class="layui-input form-control">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">班级</label>
+            <div class="layui-input-block">
+                    <input type="text" name="class" disabled="disabled" th:value="${session.loginTag.getLoginTagClassName()}" maxlength="11"  lay-verify="required|phone" autocomplete="off" class="layui-input form-control">
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/index.js}"></script>
+</body>
+</html>

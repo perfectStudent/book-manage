@@ -29,5 +29,5 @@ public interface BorrowInfoMapper {
     //更新归还字段
     int updateWhetherLend(UpdateLendVo updateLendVo);
     //查询读者是否已经借阅此图书
-    Reader getByReaderIdAndBookId(@Param("readerId")String readerId,@Param("bookId")Integer bookId);
+    BorrowInfo getByReaderIdAndBookId(@Param("readerId")String readerId,@Param("bookId")Integer bookId);
 }

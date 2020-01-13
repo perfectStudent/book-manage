@@ -6,3 +6,23 @@
     color: #f00 !important;
     font-weight: bold;
 }
+
+.baseData .layui-form-label {
+    width: 30px;
+    padding-left: 0;
+}
+
+.baseData .layui-input-block {
+    margin-left: 45px;
+}
+
+.updatePassword .layui-form-label {
+    width: 80px;
+    padding-left: 0;
+}
+.updatePassword .layui-input-inline {
+    width: 260px;
+}
+.updatePassword .layui-form-mid {
+   margin-right: 0px;
+}

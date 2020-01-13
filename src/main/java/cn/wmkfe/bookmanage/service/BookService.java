@@ -10,5 +10,5 @@ public interface BookService {
     int updateBook(Book book);
     Book getBookByBookId(Integer bookId);
     List<Book> getBookList(Book book, String keyword, Integer currentPage, Integer pageSize);
-    int getBookTotal(String keyword);
+    int getBookTotal(String keyword,Book book);
 }

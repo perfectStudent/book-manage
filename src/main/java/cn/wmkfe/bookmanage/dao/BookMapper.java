@@ -16,6 +16,6 @@ public interface BookMapper {
                        @Param("keyword") String keyword,
                        @Param("from") Integer from,
                        @Param("pageSize") Integer pageSize);
-    int getTotal(@Param("keyword") String keyword);
+    int getTotal(@Param("keyword") String keyword,@Param("book")Book book);
     int updateLendNumber(UpdateLendVo updateLendVo);
 }

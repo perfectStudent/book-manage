@@ -43,22 +43,6 @@ public class BorrowInfo {
                 '}';
     }
 
-    public Reader getReader() {
-        return reader;
-    }
-
-    public void setReader(Reader reader) {
-        this.reader = reader;
-    }
-
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
-    }
-
     public String getBorrowId() {
         return borrowId;
     }
@@ -129,5 +113,21 @@ public class BorrowInfo {
 
     public void setWhetherLend(Boolean whetherLend) {
         this.whetherLend = whetherLend;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public Reader getReader() {
+        return reader;
+    }
+
+    public void setReader(Reader reader) {
+        this.reader = reader;
     }
 }

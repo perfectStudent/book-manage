@@ -63,7 +63,6 @@
         where reader_id=#{readerId}
     </select>
 
-
     <resultMap id="readerMap" type="cn.wmkfe.bookmanage.model.Reader">
         <id column="reader_id" property="readerId"></id>
         <result column="password" property="password"></result>

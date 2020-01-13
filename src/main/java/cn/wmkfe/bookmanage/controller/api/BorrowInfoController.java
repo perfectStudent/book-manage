@@ -1,6 +1,7 @@
 package cn.wmkfe.bookmanage.controller.api;
 
 import cn.wmkfe.bookmanage.model.BorrowInfo;
+import cn.wmkfe.bookmanage.model.LoginTag;
 import cn.wmkfe.bookmanage.model.Reader;
 import cn.wmkfe.bookmanage.service.BorrowInfoService;
 import cn.wmkfe.bookmanage.util.ApiResponseEnum;
@@ -28,9 +29,9 @@ public class BorrowInfoController extends AbstractApiController{
                                         HttpSession session) {
         Map<String, Object> map = null;
 
-        Object loginTag = session.getAttribute("loginTag");
+        LoginTag loginTag = (LoginTag) session.getAttribute("loginTag");
 
-        int BorrowInfoTotal = borrowInfoService.getBorrowInfoTotal(keyword,loginTag);
+        int BorrowInfoTotal = borrowInfoService.getBorrowInfoTotal(keyword,loginTag.getObj());
 
         PageSupport pageSupport=new PageSupport();
 
@@ -40,16 +41,17 @@ public class BorrowInfoController extends AbstractApiController{
 
         pageSupport.setTotal(BorrowInfoTotal);
 
-        List<BorrowInfo> BorrowInfoList = borrowInfoService.getBorrowInfoList(null, keyword,loginTag, pageSupport.getCurrentPageNo(), limit);
+        List<BorrowInfo> borrowInfoList = borrowInfoService.getBorrowInfoList(null, keyword,loginTag.getObj(), pageSupport.getCurrentPageNo(), limit);
 
-        map = this.resultJsonLayui(ApiResponseEnum.SUCCESS.getCode(), ApiResponseEnum.SUCCESS.getName(),BorrowInfoTotal, BorrowInfoList);
+        map = this.resultJsonLayui(ApiResponseEnum.SUCCESS.getCode(), ApiResponseEnum.SUCCESS.getName(),BorrowInfoTotal, borrowInfoList);
 
         return map;
     }
 
     @PostMapping("/borrowInfos")
     public Map<String, Object> addBorrowInfos(BorrowInfo borrowInfo, HttpSession session) {
-        Reader reader = (Reader) session.getAttribute("loginTag");
+        LoginTag loginTag = (LoginTag) session.getAttribute("loginTag");
+        Reader reader= (Reader) loginTag.getObj();
         int i = borrowInfoService.addBorrowInfo(borrowInfo,reader);
         if(i==0){
             return this.resultJson(ApiResponseEnum.FAIL.getCode(),ApiResponseEnum.FAIL.getName(),null);

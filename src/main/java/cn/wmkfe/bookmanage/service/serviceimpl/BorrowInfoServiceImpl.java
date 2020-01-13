@@ -33,7 +33,7 @@ public class BorrowInfoServiceImpl implements BorrowInfoService {
     @Transactional
     @Override
     public int addBorrowInfo(BorrowInfo borrowInfo, Reader reader) {
-        Reader byReaderIdAndBookId = borrowInfoMapper.getByReaderIdAndBookId(reader.getReaderId(), borrowInfo.getBookId());
+        BorrowInfo byReaderIdAndBookId = borrowInfoMapper.getByReaderIdAndBookId(reader.getReaderId(), borrowInfo.getBookId());
         Book book = bookMapper.getByBookId(borrowInfo.getBookId());
         int number = book.getNumber();
         int lendNumber= book.getLendNumber() + 1;
@@ -84,7 +84,8 @@ public class BorrowInfoServiceImpl implements BorrowInfoService {
 
     @Override
     public List<BorrowInfo> getBorrowInfoList(BorrowInfo borrowInfo, String keyword, Object loginTag, Integer from, Integer pageSize) {
-        return Reader.class==loginTag.getClass() ? borrowInfoMapper.getList(borrowInfo, keyword, null, (from - 1) * pageSize, pageSize) : borrowInfoMapper.getList(borrowInfo, keyword,((Reader)loginTag).getReaderId(), (from - 1) * pageSize, pageSize);
+
+        return Reader.class==loginTag.getClass() ?  borrowInfoMapper.getList(borrowInfo, keyword,((Reader)loginTag).getReaderId(), (from - 1) * pageSize, pageSize) : borrowInfoMapper.getList(borrowInfo, keyword, null, (from - 1) * pageSize, pageSize) ;
     }
 
 
@@ -95,7 +96,7 @@ public class BorrowInfoServiceImpl implements BorrowInfoService {
 
     @Override
     public int getBorrowInfoTotal(String keyword, Object loginTag) {
-        return Reader.class==loginTag.getClass() ? borrowInfoMapper.getTotal(keyword, null) : borrowInfoMapper.getTotal(keyword, ((Reader)loginTag).getReaderId());
+        return Reader.class==loginTag.getClass() ?  borrowInfoMapper.getTotal(keyword, ((Reader)loginTag).getReaderId()):borrowInfoMapper.getTotal(keyword, null) ;
     }
 
 

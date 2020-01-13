@@ -100,8 +100,11 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'util','form'], fun
             },
             dataType: "json",
             success: function (res) {
-                tableIndex.reload();
-                layer.close(index);
+                var index = layer.msg('提交中，请稍候',{icon: 16,time:false,shade:0.8});
+                setTimeout(function () {
+                    tableIndex.reload();
+                    layer.close(index);
+                }, 2000)
             }
         })
     }
@@ -133,8 +136,11 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'util','form'], fun
             },
             dataType: "json",
             success: function (res) {
-                // tableIndex.reload();
-                layer.close(index);
+                var index = layer.msg('提交中，请稍候',{icon: 16,time:false,shade:0.8});
+                setTimeout(function () {
+                    tableIndex.reload();
+                    layer.close(index);
+                }, 2000)
             }
         })
     }

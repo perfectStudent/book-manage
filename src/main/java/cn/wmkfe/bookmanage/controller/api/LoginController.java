@@ -1,6 +1,7 @@
 package cn.wmkfe.bookmanage.controller.api;
 
 import cn.wmkfe.bookmanage.model.Admin;
+import cn.wmkfe.bookmanage.model.LoginTag;
 import cn.wmkfe.bookmanage.model.Reader;
 import cn.wmkfe.bookmanage.service.AdminService;
 import cn.wmkfe.bookmanage.service.ReaderService;
@@ -29,14 +30,14 @@ public class LoginController extends AbstractApiController {
             Admin admin = adminService.getAdminOne(username);
             if (admin != null && admin.getPassword().equals(MD5Utils.MD5Lower(username,password))) {
                 admin.setPassword(null);
-                session.setAttribute("loginTag", admin);
+                session.setAttribute("loginTag", new LoginTag(admin));
                 return this.resultJson(ApiResponseEnum.SUCCESS.getCode(), ApiResponseEnum.SUCCESS.getName(), null);
             }
         }else{
             Reader reader = readerService.getByReaderId(username);
             if (reader != null && reader.getPassword().equals(MD5Utils.MD5Lower(username,password))) {
                 reader.setPassword(null);
-                session.setAttribute("loginTag", reader);
+                session.setAttribute("loginTag", new LoginTag(reader));
                 return this.resultJson(ApiResponseEnum.SUCCESS.getCode(), ApiResponseEnum.SUCCESS.getName(), null);
             }
         }

@@ -3,10 +3,12 @@ package cn.wmkfe.bookmanage.controller.api;
 import cn.wmkfe.bookmanage.model.Reader;
 import cn.wmkfe.bookmanage.service.ReaderService;
 import cn.wmkfe.bookmanage.util.ApiResponseEnum;
+import cn.wmkfe.bookmanage.util.MD5Utils;
 import cn.wmkfe.bookmanage.util.PageSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -70,6 +72,22 @@ public class ReaderController extends AbstractApiController {
         Reader ReaderByReaderId = readerService.getByReaderId(readerId);
         map = this.resultJson(ApiResponseEnum.SUCCESS.getCode(),ApiResponseEnum.SUCCESS.getName(),ReaderByReaderId);
         return map;
+    }
+    //更新密码
+    @PutMapping("/readers/updatePassword")
+    public Map<String, Object> updatePassword(@RequestParam(value = "password")String password,@RequestParam(value = "newPassword")String newPassword, HttpSession session) {
+        Object loginTag = session.getAttribute("loginTag");
+        if(Reader.class==loginTag.getClass()){
+            Reader reader = (Reader) loginTag;
+            reader = readerService.getByReaderId(reader.getReaderId());
+            //校验原密码
+            if(reader.getPassword().equals(MD5Utils.MD5Lower(reader.getReaderId(),password))){
+                reader.setPassword(MD5Utils.MD5Lower(reader.getReaderId(),password));
+                readerService.updateReader(reader);
+                return this.resultJson(ApiResponseEnum.SUCCESS.getCode(),ApiResponseEnum.SUCCESS.getName(),null);
+            }
+        }
+        return this.resultJson(ApiResponseEnum.FAIL.getCode(),"原密码输入不正确!",null);
     }
 
 }

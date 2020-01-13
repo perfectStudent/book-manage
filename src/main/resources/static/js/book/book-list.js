@@ -1,10 +1,10 @@
-layui.use(['jquery', 'laypage', 'layer', 'table', 'element','form'], function () {
+layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'form'], function () {
     var laypage = layui.laypage //分页
         , layer = layui.layer //弹层
         , table = layui.table //表格
         , $ = layui.jquery //jquery
         , element = layui.element //元素操作
-        , form = layui.form ;//表单
+        , form = layui.form;//表单
 
     //执行一个 table 实例
     var tableIndex = table.render({
@@ -16,21 +16,23 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element','form'], function ()
         , page: true //开启分页
         , cols: [[ //表头
             {type: 'checkbox', fixed: 'left'}
-            , {field: 'bookId', title: 'ID', width: 60,hide:true}
-            , {field: 'bookName', title: '书名', align: 'center',width: 150}
-            , {field: 'author', title: '作者', align: 'center',width: 100}
-            , {field: 'type', title: '分类Id', width: 120,hide:true}
-            , {field: 'typeName', title: '分类',align: 'center', width: 120,templet:function(d){
-                return d.typeModel.typeName;
-            }}
-            , {field: 'price', title: '价格',align: 'center', width: 80}
-            , {field: 'press', title: '出版社', align: 'center',width: 130}
-            , {field: 'number', title: '数量',align: 'center', width: 80}
-            , {field: 'isbn', title: '标准书号',align: 'center', width: 120}
-            , {field: 'lendNumber', title: '借出数量',align: 'center', width: 100}
-            , {field: 'cover', title: '封面', width: 100,hide:true}
-            , {field: 'describe', title: '描述',align: 'center', width: 210}
-            , {fixed: 'right',title:'操作', width: 165, align: 'center', toolbar: '#book-list-bar'}  //每行的操作按钮
+            , {field: 'bookId', title: 'ID', width: 60, hide: true}
+            , {field: 'bookName', title: '书名', align: 'center', width: 150}
+            , {field: 'author', title: '作者', align: 'center', width: 100}
+            , {field: 'type', title: '分类Id', width: 120, hide: true}
+            , {
+                field: 'typeName', title: '分类', align: 'center', width: 120, templet: function (d) {
+                    return d.typeModel.typeName;
+                }
+            }
+            , {field: 'price', title: '价格', align: 'center', width: 80}
+            , {field: 'press', title: '出版社', align: 'center', width: 130}
+            , {field: 'number', title: '数量', align: 'center', width: 80}
+            , {field: 'isbn', title: '标准书号', align: 'center', width: 120}
+            , {field: 'lendNumber', title: '借出数量', align: 'center', width: 100}
+            , {field: 'cover', title: '封面', width: 100, hide: true}
+            , {field: 'describe', title: '描述', align: 'center', width: 210}
+            , {fixed: 'right', title: '操作', width: 165, align: 'center', toolbar: '#book-list-bar'}  //每行的操作按钮
         ]]
     });
 
@@ -52,7 +54,7 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element','form'], function ()
         } else if (layEvent === 'edit') {
             addBook(data);
             layer.msg('编辑操作');
-        }else if (layEvent === 'lend') {
+        } else if (layEvent === 'lend') {
             console.log(data);
             lendBook(data);
         }
@@ -66,7 +68,8 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element','form'], function ()
                     curr: 1 //重新从第 1 页开始
                 },
                 where: {
-                    keyword: $(".searchVal").val()  //搜索的关键字
+                    keyword: $(".searchVal").val(),  //搜索的关键字
+                    bookType: $("#bookType option:selected").val()  //按类型搜索
                 }
             })
         } else {
@@ -90,7 +93,7 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element','form'], function ()
                     body.find(".bookName").val(edit.bookName);
                     body.find(".author").val(edit.author);
                     // body.find("#type").val(edit.type);
-                    body.find("#type").val(""+edit.type+"");
+                    body.find("#type").val("" + edit.type + "");
                     body.find(".price").val(edit.price);
                     body.find(".press").val(edit.press);
                     body.find(".number").val(edit.number);
@@ -109,8 +112,8 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element','form'], function ()
 
     }
 
-        //查看图书
-    function detailBook(data){
+    //查看图书
+    function detailBook(data) {
         console.log(data)
         var index = layui.layer.open({
             title: "查看图书",
@@ -119,17 +122,16 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element','form'], function ()
             area: ['700px', '600px'],
             success: function (layero, index) {
                 var body = layui.layer.getChildFrame('body', index);
-
-                    body.find(".bookId").val(data.bookId);
-                    body.find(".bookName").val(data.bookName);
-                    body.find(".author").val(data.author);
-                    body.find(".type").val(data.typeModel.typeName);
-                    body.find(".price").val(data.price);
-                    body.find(".press").val(data.press);
-                    body.find(".number").val(data.number);
-                    body.find(".isbn").val(data.isbn);
-                    body.find(".cover").attr("src", data.cover);
-                    body.find(".describe").val(data.describe);
+                body.find(".bookId").val(data.bookId);
+                body.find(".bookName").val(data.bookName);
+                body.find(".author").val(data.author);
+                body.find(".type").val(data.typeModel.typeName);
+                body.find(".price").val(data.price);
+                body.find(".press").val(data.press);
+                body.find(".number").val(data.number);
+                body.find(".isbn").val(data.isbn);
+                body.find(".cover").attr("src", data.cover);
+                body.find(".describe").val(data.describe);
 
                 setTimeout(function () {
                     layui.layer.tips('点击此处返回图书列表', '.layui-layer-setwin .layui-layer-close', {
@@ -163,7 +165,8 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element','form'], function ()
             bookId = [];
         for (var i in data) {
             bookId.push(data[i].bookId);
-        };
+        }
+        ;
         $.ajax({
             type: "POST",
             url: "/books",
@@ -193,16 +196,16 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element','form'], function ()
             dataType: "json",
             success: function (res) {
                 tableIndex.reload();
-                setTimeout(function(){
+                setTimeout(function () {
                     layer.closeAll('loading');
-                    if(res.code==0){
+                    if (res.code == 0) {
                         layer.msg("借阅成功!");
-                    }else{
+                    } else {
                         layer.msg("借阅失败!");
                     }
                 }, 2000);
             },
-            error:function (res) {
+            error: function (res) {
                 layer.msg("借阅失败!");
                 layer.closeAll('loading');
             }
@@ -210,5 +213,19 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element','form'], function ()
 
 
     }
+
     //图书借阅结束
+
+    //监听图书类型选择框开始
+    form.on('select(typesFilter)', function (data) {
+        table.reload("bookListTable", {
+            page: {
+                curr: 1 //重新从第 1 页开始
+            },
+            where: {
+                bookType: data.value  //按类型搜索
+            }
+        })
+    });
+    //监听图书类型选择框结束
 });
