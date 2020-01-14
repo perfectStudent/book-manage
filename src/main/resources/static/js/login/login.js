@@ -28,12 +28,12 @@ layui.use(['element', 'jquery', 'form','layer'], function () {
                 setTimeout(function(){
                     layer.close(index);
                     window.location.href = "/login.html";
-                },1000);
+                },2000);
             }else {
                 setTimeout(function(){
                     layer.close(index);
-                    layer.msg(res.msg);
-                },1000);
+                },2000);
+                layer.msg(res.msg);
             }
         });
     }

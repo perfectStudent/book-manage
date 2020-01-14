@@ -68,7 +68,8 @@
         on b.`type`=t.`id`
         <where>
             <if test="keyword!=null and keyword!=''">
-                INSTR (book_name,#{keyword}) OR INSTR(author,#{keyword})
+                (INSTR (book_name,#{keyword})
+                OR INSTR(author,#{keyword}))
             </if>
             <if test="book.type!=null">
                 and b.type=#{book.type}
@@ -101,7 +102,7 @@
         from t_book as b
         <where>
             <if test="keyword!=null and keyword!=''">
-                INSTR (book_name,#{keyword}) OR INSTR(author,#{keyword})
+                (INSTR (book_name,#{keyword}) OR INSTR(author,#{keyword}))
             </if>
             <if test="book.type!=null">
                 and b.type=#{book.type}

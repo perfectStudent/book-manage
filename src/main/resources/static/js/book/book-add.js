@@ -22,6 +22,11 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'upload', 'form','element'], f
         if (data.field.bookId) {
             updateBooks(data.field);
         }else {
+            if(data.field.type==-1)
+            {
+                layer.msg("请选择图书类型")
+                return false;
+            }
             addBooks(data.field);
         }
         return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
@@ -29,7 +34,7 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'upload', 'form','element'], f
 
     //数据校验
     form.verify({
-
+        types
     });
 
     function addBooks(data) {

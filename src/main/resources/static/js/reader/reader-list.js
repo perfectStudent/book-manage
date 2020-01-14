@@ -17,9 +17,6 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'util','form'], fun
         , cols: [[ //表头
             {type: 'checkbox', fixed: 'left'}
             , {field: 'readerId', title: '读者ID',align: 'center', width: 150}
-            , {field: 'password', title: '密码', align: 'center', width: 120,hide: true,templet: function (d) {
-                    return '* * * * * *';
-                }}
             , {field: 'name', title: '读者姓名', align: 'center',width: 180}
             , {field: 'phone', title: '号码', align: 'center', width: 110}
             , {field: 'collegeName', title: '学院', align: 'center', width: 210, templet: function (d) {
@@ -48,9 +45,24 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'util','form'], fun
             // layer.msg('查看操作');
         } else if (layEvent === 'del') {
             layer.confirm('真的删除行么', function (index) {
-                // obj.del(); //删除对应行（tr）的DOM结构
-                // layer.close(index);
-                deleteBooks(data, index);
+                var readerId = [];
+                for (var i in data) {
+                    readerId.push(data[i].readerId);
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "/readers",
+                    data: {
+                        _method: "DELETE",
+                        ids: readerId
+                    },
+                    dataType: "json",
+                    success: function (res) {
+                        tableIndex.reload();
+                        layer.close(index);
+                    }
+                })
+
             });
         } else if (layEvent === 'edit') {
             addBook(data);
@@ -146,28 +158,28 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'util','form'], fun
         var checkStatus = table.checkStatus('readerListTable'),
             data = checkStatus.data;
         if (data.length > 0) {
-            layer.confirm('确定删除选中的图书？', {icon: 3, title: '提示信息'}, function (index) {
+            layer.confirm('确定删除选中的账号？', {icon: 3, title: '提示信息'}, function (index) {
                 deleteBooks(data, index);
             })
         } else {
-            layer.msg("请选择需要删除的图书");
+            layer.msg("请选择需要删除的账号");
         }
     })
 
     function deleteBooks(data, index) {
+
         var checkStatus = table.checkStatus('readerListTable'),
             data = checkStatus.data,
-            bookId = [];
+            readerId = [];
         for (var i in data) {
-            bookId.push(data[i].bookId);
-        }
-        ;
+            readerId.push(data[i].readerId);
+        };
         $.ajax({
             type: "POST",
-            url: "/books",
+            url: "/readers",
             data: {
                 _method: "DELETE",
-                ids: bookId
+                ids: readerId
             },
             dataType: "json",
             success: function (res) {

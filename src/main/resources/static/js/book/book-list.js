@@ -201,12 +201,12 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'form'], function (
                     if (res.code == 0) {
                         layer.msg("借阅成功!");
                     } else {
-                        layer.msg("借阅失败!");
+                        layer.msg("借阅失败，你已借阅次数!");
                     }
                 }, 2000);
             },
             error: function (res) {
-                layer.msg("借阅失败!");
+                layer.msg("服务器内部错误!");
                 layer.closeAll('loading');
             }
         });
@@ -223,6 +223,7 @@ layui.use(['jquery', 'laypage', 'layer', 'table', 'element', 'form'], function (
                 curr: 1 //重新从第 1 页开始
             },
             where: {
+                keyword: $(".searchVal").val(),  //搜索的关键字
                 bookType: data.value  //按类型搜索
             }
         })

@@ -54,8 +54,8 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">性别</label>
                         <div class="layui-input-inline">
-                            <select name="gender" >
-                                <option value="0" selected="">请选择性别</option>
+                            <select name="gender" lay-verify="required">
+                                <option value="0" selected="" >请选择性别</option>
                                 <option value="1" th:each="gender : ${genders}" th:text="${gender.genderName}" th:value="${gender.id}">男</option>
                             </select>
                         </div>

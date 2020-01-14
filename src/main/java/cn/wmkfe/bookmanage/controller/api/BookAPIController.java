@@ -44,6 +44,7 @@ public class BookAPIController extends AbstractApiController {
     @PostMapping("/books")
     public Map<String, Object> addBooks(Book book) {
         Map<String, Object> map = null;
+        book.setLendNumber(0);
         int i = bookService.addBook(book);
         map = this.resultJson(ApiResponseEnum.SUCCESS.getCode(),ApiResponseEnum.SUCCESS.getName(),null);
         return map;

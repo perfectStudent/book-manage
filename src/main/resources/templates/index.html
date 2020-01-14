@@ -18,7 +18,7 @@
                     <th:block th:text="${session.loginTag.getLoginTagUserName()}"></th:block>
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="javascript:;" id="baseData" th:if="${session.loginTag.getLoginTagRole()=='admin'}">基本资料</a></dd>
+                    <dd><a href="javascript:;" id="baseData" th:if="${session.loginTag.getLoginTagRole()!='admin'}">基本资料</a></dd>
                     <dd><a href="javascript:;" id="updatePassword">修改密码</a></dd>
                 </dl>
             </li>

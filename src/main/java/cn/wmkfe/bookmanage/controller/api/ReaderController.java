@@ -40,11 +40,12 @@ public class ReaderController extends AbstractApiController {
     }
 
     @PostMapping("/readers")
-    public Map<String, Object> addreaders(Reader Reader) {
-        Map<String, Object> map = null;
-        int i = readerService.addReader(Reader);
-        map = this.resultJson(ApiResponseEnum.SUCCESS.getCode(),ApiResponseEnum.SUCCESS.getName(),null);
-        return map;
+    public Map<String, Object> addreaders(Reader reader) {
+        if(readerService.getByReaderId(reader.getReaderId())==null){
+            int i = readerService.addReader(reader);
+            return this.resultJson(ApiResponseEnum.SUCCESS.getCode(),ApiResponseEnum.SUCCESS.getName(),null);
+        }
+        return this.resultJson(ApiResponseEnum.FAIL.getCode(),"此账号已经存在",null);
     }
 
     //修改
