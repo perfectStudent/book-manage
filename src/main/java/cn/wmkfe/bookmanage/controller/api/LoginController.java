@@ -46,7 +46,10 @@ public class LoginController extends AbstractApiController {
 
     @RequestMapping("/registerUser")
     public Map<String, Object> registerUser(Reader reader) {
+        Map<String, Object> map = null;
+        reader.setPassword(MD5Utils.MD5Lower(reader.getReaderId(),reader.getPassword()));
         if(readerService.getByReaderId(reader.getReaderId())==null){
+            //添加读者信息
             int i = readerService.addReader(reader);
             return this.resultJson(ApiResponseEnum.SUCCESS.getCode(),ApiResponseEnum.SUCCESS.getName(),null);
         }
